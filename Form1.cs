@@ -33,9 +33,15 @@ namespace CS_GUI
 
             mVictory.Text = "";
 
-            //InitButton();
+            LoadJSON();            
 
-
+            foreach (Gamer gamer in gamers.Gamers)
+            {
+                nameSelect.Items.Add(gamer.Name);
+            }
+            nameSelect.Enabled = true;
+            nameSelect.Text = nameSelect.Items[0].ToString();
+            
         }
 
         // Инициализирует кнопки.
@@ -119,7 +125,7 @@ namespace CS_GUI
                 gamers.Gamers.Add(gamer1);
                 gamers.Gamers.Add(gamer2);
 
-                SaveJSON(gamers);
+                SaveJSON();
             }
             
 
@@ -276,35 +282,74 @@ namespace CS_GUI
         {
             if(labelGamer.Text == "ИГРОК 1")
             {
-                gamer1 = new Gamer(nameReg.Text);
-                //gamers.Gamers.Add(gamer1);
-                //SaveJSON(gamer1);
+                gamer1 = new Gamer(nameReg.Text);            
                 labelGamer.Text = "ИГРОК 2";                
                 nameReg.Clear();                
             }
-            else if(labelGamer.Text == "ИГРОК 2")
+            else
             {
-                gamer2 = new Gamer(nameReg.Text);
-                //SaveJSON(gamer2);
-                //gamers.Gamers.Add(gamer2);
+                gamer2 = new Gamer(nameReg.Text);            
                 nameReg.Visible = false;
                 btnReg.Visible = false;
                 nameSelect.Visible = false;
-                btnComeIn.Visible = false;
-                
+                btnComeIn.Visible = false;                
                 labelGamer.Top = 35;                
                 labelGamer.Text = gamer1.Name;
-
                 InitButton();
             }           
         }
 
+        private void btnComeIn_Click(object sender, EventArgs e)
+        {
+            if (labelGamer.Text == "ИГРОК 1")
+            {                
+                int index = 0;
+
+                foreach (Gamer gm in gamers.Gamers)
+                {
+                    if(gm.Name == nameSelect.SelectedItem.ToString())
+                    {
+                        gamer1 = gm;
+                        index = gamers.Gamers.IndexOf(gm);
+                    }
+                }
+
+                gamers.Gamers.RemoveAt(index);
+                labelGamer.Text = "ИГРОК 2";
+            }
+            else
+            {                
+                int index = 0;
+
+                foreach (Gamer gm in gamers.Gamers)
+                {
+                    if (gm.Name == nameSelect.SelectedItem.ToString())
+                    {
+                        gamer2 = gm;
+                        index = gamers.Gamers.IndexOf(gm);
+                    }
+                }
+
+                gamers.Gamers.RemoveAt(index);
+
+                nameReg.Visible = false;
+                btnReg.Visible = false;
+                nameSelect.Visible = false;
+                btnComeIn.Visible = false;
+                labelGamer.Top = 35;
+                labelGamer.Text = gamer1.Name;
+                InitButton();
+            }
+
+
+        }
+
         // Записываем параметры игрока.
-        private void SaveJSON(ListGamers gamers)
+        private void SaveJSON()
         {
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ListGamers));
 
-            using (FileStream fs = new FileStream("Gamers.json", FileMode.Append))
+            using (FileStream fs = new FileStream("Gamers.json", FileMode.OpenOrCreate))
             {
                 jsonFormatter.WriteObject(fs, gamers);                
             }
@@ -312,9 +357,16 @@ namespace CS_GUI
 
         protected void LoadJSON()
         {
+            using (FileStream fs = new FileStream("Gamers.json", FileMode.Open))
+            {
+                DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ListGamers));
 
+                gamers = (ListGamers)jsonFormatter.ReadObject(fs);
+                
+            }
         }
 
+        
     }
 
     

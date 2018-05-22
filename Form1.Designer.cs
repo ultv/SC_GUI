@@ -63,6 +63,7 @@
             this.btnComeIn.TabIndex = 3;
             this.btnComeIn.Text = "ВОЙТИ";
             this.btnComeIn.UseVisualStyleBackColor = true;
+            this.btnComeIn.Click += new System.EventHandler(this.btnComeIn_Click);
             // 
             // btnReg
             // 
@@ -95,10 +96,12 @@
             // 
             // nameSelect
             // 
+            this.nameSelect.Enabled = false;
             this.nameSelect.FormattingEnabled = true;
             this.nameSelect.Location = new System.Drawing.Point(79, 337);
             this.nameSelect.Name = "nameSelect";
             this.nameSelect.Size = new System.Drawing.Size(200, 21);
+            this.nameSelect.Sorted = true;
             this.nameSelect.TabIndex = 7;
             this.nameSelect.SelectedIndexChanged += new System.EventHandler(this.nameSelect_SelectedIndexChanged);
             // 
