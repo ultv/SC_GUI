@@ -35,6 +35,7 @@ namespace CS_GUI
                     but[i, j].Left = i * 75 + 65;
                     but[i, j].BackColor = Color.White;
                     but[i, j].Size = new Size(75, 75);
+                    but[i, j].Font = new Font("Arial", 40);
                     but[i, j].Click += but_Click;
                     this.Controls.Add(but[i, j]);
                 }
@@ -64,6 +65,23 @@ namespace CS_GUI
         {
             Button btn = (Button)sender;
 
+            SetValue(btn);
+
+            btn.Enabled = false;
+
+            ReviseRows();
+
+            ReviseCols();
+
+            ReviseMainDiag();
+
+            ReviseSecDiag();
+                       
+        }
+
+        // Поочерёдно устанавливает "крестик" или "нолик".
+        protected void SetValue(Button btn)
+        {
             if (X)
             {
                 btn.Text = "O";
@@ -75,9 +93,23 @@ namespace CS_GUI
                 btn.Text = "X";
                 X = true;
             }
+        }
 
-            // Проверяет элементы строки на равенство первому элементу в строке.
-            /// правильно не работает!!!!!!!        
+        // "Замораживает" все кнопки.
+        protected void AllNotEnabled()
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    but[i, j].Enabled = false;
+                }
+            }
+        }
+
+        // Проверяет элементы строки на равенство первому элементу в строке.
+        protected void ReviseRows()
+        {
             for (int j = 0; j < 3; j++)
             {
                 bool equal = true;
@@ -88,16 +120,19 @@ namespace CS_GUI
                     {
                         equal = false;
                     }
-
                 }
 
                 if (equal)
                 {
+                    AllNotEnabled();
                     mVictory.Text += "Совпадение элементов в строке!\n";
                 }
             }
+        }
 
-            // Проверяет элементы строки на равенство первому элементу в столбце.            
+        // Проверяет элементы столбца на равенство первому элементу в столбце.            
+        protected void ReviseCols()
+        {            
             for (int i = 0; i < 3; i++)
             {
                 bool equal = true;
@@ -108,36 +143,42 @@ namespace CS_GUI
                     {
                         equal = false;
                     }
-
                 }
 
                 if (equal)
                 {
+                    AllNotEnabled();
                     mVictory.Text += "Совпадение элементов в столбце!\n";
                 }
             }
+        }
 
-            // Элементы главной диагонали
+        // Проверяет элементы главной диагонали.
+        protected void ReviseMainDiag()
+        {            
             if (but[0, 0].Text != "")
-            {           
+            {
                 bool equal = true;
 
                 for (int i = 0; i < 3; i++)
                 {
-                    if ((but[i, i].Text != but[0, 0].Text ))
+                    if ((but[i, i].Text != but[0, 0].Text))
                     {
                         equal = false;
                     }
-                        
                 }
 
                 if (equal)
                 {
+                    AllNotEnabled();
                     mVictory.Text += "Совпадение элементов главной диагонали!\n";
                 }
             }
+        }
 
-            // Элементы побочной диагонали
+        // Проверяет элементы побочной диагонали.
+        protected void ReviseSecDiag()
+        {            
             if (but[0, 3 - 1].Text != "")
             {
                 bool equal = true;
@@ -148,19 +189,16 @@ namespace CS_GUI
                     {
                         equal = false;
                     }
-                        
                 }
 
                 if (equal)
                 {
+                    AllNotEnabled();
                     mVictory.Text += "Совпадение элементов побочной диагонали!\n";
-                }                
-            }                
-
-            
-
-
+                }
+            }
         }
+        
 
 
     }
