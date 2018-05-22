@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.IO;
 
 namespace CS_GUI
 {
@@ -18,20 +21,32 @@ namespace CS_GUI
             InitializeComponent();
         }
 
+        static bool X = true;    
         Button[,] but = new Button[3, 3];
+        Gamer gamer1;
+        Gamer gamer2;
+        bool stopGame = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
             mVictory.Text = "";
 
+            //InitButton();
+
+
+        }
+
+        // Инициализирует кнопки.
+        protected void InitButton()
+        {
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    but[i, j] = new Button();
+                    but[i, j] = new Button();                   
                     but[i, j].Text = "";
-                    but[i, j].Top = j * 75 + 25;
+                    but[i, j].Top = j * 75 + 100;
                     but[i, j].Left = i * 75 + 65;
                     but[i, j].BackColor = Color.White;
                     but[i, j].Size = new Size(75, 75);
@@ -40,23 +55,19 @@ namespace CS_GUI
                     this.Controls.Add(but[i, j]);
                 }
             }
-
-
         }
 
-        static bool X = true;
-
+        [DataContract]
         public class Gamer
         {
-            public string Name { get; set; }
-            public string WhatPlays { get; set; }
+            [DataMember]
+            public string Name { get; set; }            
+            [DataMember]
             public int HowVictories { get; set; }
-            public bool IGo { get; set; }
 
-            public Gamer(string name, string what)
+            public Gamer(string name)
             {
-                Name = name;
-                WhatPlays = what;
+                Name = name;                
                 HowVictories = 0;
             }
         }
@@ -76,7 +87,24 @@ namespace CS_GUI
             ReviseMainDiag();
 
             ReviseSecDiag();
-                       
+
+            if(!stopGame)
+            {
+                ChangeName();
+            }
+            else
+            {
+                if(labelGamer.Text == gamer1.Name)
+                {
+                    gamer1.HowVictories++;
+                }
+                else
+                {
+                    gamer2.HowVictories++;
+                }
+            }
+            
+
         }
 
         // Поочерёдно устанавливает "крестик" или "нолик".
@@ -92,6 +120,19 @@ namespace CS_GUI
             {
                 btn.Text = "X";
                 X = true;
+            }
+        }
+
+        // Сообщает о переходе хода другому игроку.
+        protected void ChangeName()
+        {
+            if(labelGamer.Text == gamer1.Name)
+            {
+                labelGamer.Text = gamer2.Name;
+            }
+            else
+            {
+                labelGamer.Text = gamer1.Name;
             }
         }
 
@@ -125,6 +166,7 @@ namespace CS_GUI
                 if (equal)
                 {
                     AllNotEnabled();
+                    stopGame = true;
                     mVictory.Text += "Совпадение элементов в строке!\n";
                 }
             }
@@ -148,6 +190,7 @@ namespace CS_GUI
                 if (equal)
                 {
                     AllNotEnabled();
+                    stopGame = true;
                     mVictory.Text += "Совпадение элементов в столбце!\n";
                 }
             }
@@ -171,6 +214,7 @@ namespace CS_GUI
                 if (equal)
                 {
                     AllNotEnabled();
+                    stopGame = true;
                     mVictory.Text += "Совпадение элементов главной диагонали!\n";
                 }
             }
@@ -194,12 +238,57 @@ namespace CS_GUI
                 if (equal)
                 {
                     AllNotEnabled();
+                    stopGame = true;
                     mVictory.Text += "Совпадение элементов побочной диагонали!\n";
                 }
             }
         }
-        
 
+        private void nameReg_TextChanged(object sender, EventArgs e)
+        {
+            btnReg.Enabled = true;
+        }
+
+        private void nameSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnComeIn.Enabled = true;
+        }
+
+        private void btnReg_Click(object sender, EventArgs e)
+        {
+            if(labelGamer.Text == "ИГРОК 1")
+            {
+                gamer1 = new Gamer(nameReg.Text);
+                SaveJSON(gamer1);
+                labelGamer.Text = "ИГРОК 2";                
+                nameReg.Clear();                
+            }
+            else if(labelGamer.Text == "ИГРОК 2")
+            {
+                gamer2 = new Gamer(nameReg.Text);
+                SaveJSON(gamer2);
+                nameReg.Visible = false;
+                btnReg.Visible = false;
+                nameSelect.Visible = false;
+                btnComeIn.Visible = false;
+                
+                labelGamer.Top = 35;                
+                labelGamer.Text = gamer1.Name;
+
+                InitButton();
+            }           
+        }
+
+        // Записываем параметры игрока.
+        private void SaveJSON(Gamer gamer)
+        {
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Gamer));
+
+            using (FileStream fs = new FileStream("Gamer.json", FileMode.Append))
+            {
+                jsonFormatter.WriteObject(fs, gamer);                
+            }
+        }
 
     }
 
