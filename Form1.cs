@@ -25,6 +25,7 @@ namespace CS_GUI
         Button[,] but = new Button[3, 3];
         Gamer gamer1;
         Gamer gamer2;
+        ListGamers gamers = new ListGamers();
         bool stopGame = false;
 
         private void Form1_Load(object sender, EventArgs e)
@@ -72,6 +73,18 @@ namespace CS_GUI
             }
         }
 
+        [DataContract]
+        public class ListGamers
+        {
+            [DataMember]
+            public List<Gamer> Gamers { get; set; }
+
+            public ListGamers()
+            {
+                Gamers = new List<Gamer>();               
+            }
+        }
+
         private void but_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
@@ -102,6 +115,11 @@ namespace CS_GUI
                 {
                     gamer2.HowVictories++;
                 }
+
+                gamers.Gamers.Add(gamer1);
+                gamers.Gamers.Add(gamer2);
+
+                SaveJSON(gamers);
             }
             
 
@@ -259,14 +277,16 @@ namespace CS_GUI
             if(labelGamer.Text == "ИГРОК 1")
             {
                 gamer1 = new Gamer(nameReg.Text);
-                SaveJSON(gamer1);
+                //gamers.Gamers.Add(gamer1);
+                //SaveJSON(gamer1);
                 labelGamer.Text = "ИГРОК 2";                
                 nameReg.Clear();                
             }
             else if(labelGamer.Text == "ИГРОК 2")
             {
                 gamer2 = new Gamer(nameReg.Text);
-                SaveJSON(gamer2);
+                //SaveJSON(gamer2);
+                //gamers.Gamers.Add(gamer2);
                 nameReg.Visible = false;
                 btnReg.Visible = false;
                 nameSelect.Visible = false;
@@ -280,14 +300,19 @@ namespace CS_GUI
         }
 
         // Записываем параметры игрока.
-        private void SaveJSON(Gamer gamer)
+        private void SaveJSON(ListGamers gamers)
         {
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Gamer));
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ListGamers));
 
-            using (FileStream fs = new FileStream("Gamer.json", FileMode.Append))
+            using (FileStream fs = new FileStream("Gamers.json", FileMode.Append))
             {
-                jsonFormatter.WriteObject(fs, gamer);                
+                jsonFormatter.WriteObject(fs, gamers);                
             }
+        }
+
+        protected void LoadJSON()
+        {
+
         }
 
     }
