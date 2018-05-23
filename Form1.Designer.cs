@@ -115,7 +115,6 @@
             this.btnRepeat.Text = "ПРОДОЛЖИТЬ ИГРУ";
             this.btnRepeat.UseVisualStyleBackColor = true;
             this.btnRepeat.Visible = false;
-            this.btnRepeat.Click += new System.EventHandler(this.btnRepeat_Click);
             // 
             // Form1
             // 

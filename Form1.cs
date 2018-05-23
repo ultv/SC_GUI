@@ -16,18 +16,20 @@ namespace CS_GUI
 
     public partial class Form1 : Form
     {
-        public Form1()
-        {
-            InitializeComponent();
-        }
+        int numGame = 0;
+        int howSteps = 9;
+        bool stopGame = false;
+        static bool lastX = true;        
 
-        static bool X = true;    
-        Button[,] but = new Button[3, 3];
         Gamer gamer1;
         Gamer gamer2;
         ListGamers gamers = new ListGamers();
-        bool stopGame = false;
-        int count = 0;
+        Button[,] but = new Button[3, 3];
+
+        public Form1()
+        {
+            InitializeComponent();
+        }       
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -60,6 +62,8 @@ namespace CS_GUI
                     but[i, j].Size = new Size(75, 75);
                     but[i, j].Font = new Font("Arial", 40);
                     but[i, j].Click += but_Click;
+                    but[i, j].MouseEnter += but_MouseEnter;
+                    but[i, j].MouseLeave += but_MouseLeave;
                     this.Controls.Add(but[i, j]);
                 }
             }
@@ -67,6 +71,7 @@ namespace CS_GUI
             labelGamer.Focus();
         }
 
+        // Игрок.
         [DataContract]
         public class Gamer
         {
@@ -82,6 +87,7 @@ namespace CS_GUI
             }
         }
 
+        // Список игроков.
         [DataContract]
         public class ListGamers
         {
@@ -94,9 +100,10 @@ namespace CS_GUI
             }
         }
 
+        // Обработка события - игрок сделал ход.
         private void but_Click(object sender, EventArgs e)
         {
-            count++;
+            howSteps--;
 
             labelGamer.Focus();
 
@@ -118,10 +125,12 @@ namespace CS_GUI
 
         }
 
-        // Ожидет окончания игры.
+        
+
+        // Ожидание окончания игры.
         protected void FinaliseGame()
         {
-            if((count == 9) && (!stopGame))
+            if((howSteps == 0) && (!stopGame))
             {
                 mVictory.Text = "Победителей нет!";
                 btnRepeat.Visible = true;
@@ -147,23 +156,23 @@ namespace CS_GUI
             }
         }
 
-        // Поочерёдно устанавливает "крестик" или "нолик".
+        // Поочерёдная установка "крестик" или "нолик".
         protected void SetValue(Button btn)
         {
-            if (X)
+            if (lastX)
             {
                 btn.Text = "O";
-                X = false;
+                lastX = false;
 
             }
             else
             {
                 btn.Text = "X";
-                X = true;
-            }
+                lastX = true;
+            }            
         }
 
-        // Сообщает о переходе хода другому игроку.
+        // Сообщение о переходе хода другому игроку.
         protected void ChangeName()
         {
             if(labelGamer.Text == gamer1.Name)
@@ -176,7 +185,7 @@ namespace CS_GUI
             }
         }
 
-        // "Замораживает/разморащивает" все кнопки.
+        // "Заморозка/разморозка" всех кнопок.
         protected void AllNotYesEnabled(bool faltry)
         {
             for(int i = 0; i < 3; i++)
@@ -188,7 +197,7 @@ namespace CS_GUI
             }
         }
 
-        // "Сбрасывает" все кнопки.
+        // "Сброс" всех кнопок.
         protected void AllBtnClear()
         {
             for (int i = 0; i < 3; i++)
@@ -200,7 +209,7 @@ namespace CS_GUI
             }
         }
 
-        // Проверяет элементы строки на равенство первому элементу в строке.
+        // Проверка элементов строки на равенство первому элементу в строке.
         protected void ReviseRows()
         {
             for (int j = 0; j < 3; j++)
@@ -224,7 +233,7 @@ namespace CS_GUI
             }
         }
 
-        // Проверяет элементы столбца на равенство первому элементу в столбце.            
+        // Проверка элементов столбца на равенство первому элементу в столбце.            
         protected void ReviseCols()
         {            
             for (int i = 0; i < 3; i++)
@@ -248,7 +257,7 @@ namespace CS_GUI
             }
         }
 
-        // Проверяет элементы главной диагонали.
+        // Проверка элементов главной диагонали.
         protected void ReviseMainDiag()
         {            
             if (but[0, 0].Text != "")
@@ -272,7 +281,7 @@ namespace CS_GUI
             }
         }
 
-        // Проверяет элементы побочной диагонали.
+        // Проверка элементов побочной диагонали.
         protected void ReviseSecDiag()
         {            
             if (but[0, 3 - 1].Text != "")
@@ -296,7 +305,7 @@ namespace CS_GUI
             }
         }
 
-        // Если игрок с таким именем существует - регистрация запрещена.
+        // Запрет повторной регистрации.
         private void nameReg_TextChanged(object sender, EventArgs e)
         {
             if (!IsExistName(nameReg.Text))
@@ -309,11 +318,13 @@ namespace CS_GUI
             }                
         }
 
+        // Активация кнопки регистрации во время ввода имени игрока.
         private void nameSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnComeIn.Enabled = true;
         }
 
+        // Регистрация нового игрока.
         private void btnReg_Click(object sender, EventArgs e)
         {
             if(labelGamer.Text == "ИГРОК 1")
@@ -335,7 +346,7 @@ namespace CS_GUI
             }           
         }
 
-        // Возвращает истину если игрок существует.
+        // Возвращает истину если игрок уже зарегистрирован.
         private bool IsExistName(string name)
         {
             foreach(Gamer gamer in gamers.Gamers)
@@ -349,6 +360,7 @@ namespace CS_GUI
             return false;
         }
 
+        // Выбор игрока из списка зарегистрированных.
         private void btnComeIn_Click(object sender, EventArgs e)
         {
             if (labelGamer.Text == "ИГРОК 1")
@@ -368,8 +380,17 @@ namespace CS_GUI
 
                 gamers.Gamers.RemoveAt(index);
                 nameSelect.Items.Remove(name);
-                nameSelect.Text = nameSelect.Items[0].ToString();                
-                            
+
+                if(nameSelect.Items.Count == 0)
+                {
+                    nameSelect.Text = "";
+                    nameSelect.Enabled = false;                    
+                }
+                else
+                {
+                    nameSelect.Text = nameSelect.Items[0].ToString();
+                }
+
                 labelGamer.Text = "ИГРОК 2";
             }
             else
@@ -388,19 +409,16 @@ namespace CS_GUI
 
                 gamers.Gamers.RemoveAt(index);
                 nameSelect.Items.Remove(name);
-                nameSelect.Text = nameSelect.Items[0].ToString();
-                           
-                nameReg.Visible = false;
-                btnReg.Visible = false;
-                nameSelect.Visible = false;
-                btnComeIn.Visible = false;
-                labelGamer.Top = 35;
-                labelGamer.Text = gamer1.Name;
+                nameSelect.Text = nameSelect.Items[0].ToString();                               
+
                 InitButton();
+
+                InitGame();
+
             }
         }
 
-
+        // Извлечение из списка выбранного игрока.
         protected void RemoveItemByGamerName(Gamer gamer)
         {
             int index = 0;
@@ -420,7 +438,7 @@ namespace CS_GUI
             nameSelect.Text = nameSelect.Items[0].ToString();
         }
 
-        // Записываем параметры игрока.
+        // Запись списка игроков с параметрами.
         private void SaveJSON()
         {
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ListGamers));
@@ -431,6 +449,7 @@ namespace CS_GUI
             }
         }
 
+        // Загрузка списка игроков с параметрами.
         protected void LoadJSON()
         {
             using (FileStream fs = new FileStream("Gamers.json", FileMode.Open))
@@ -442,28 +461,85 @@ namespace CS_GUI
             }
         }
 
+        // Запуск новой игры с выбранными ранее игроками.
         private void btnRepeat_Click(object sender, EventArgs e)
         {
-            stopGame = false;
-            AllNotYesEnabled(true);
-            AllBtnClear();
-
-            labelGamer.Top = 35;
-            ChangeName();            
-            labelGamer.Visible = true;
-            labelGamer.Focus();
-            btnRepeat.Visible = false;
-            mVictory.Text = "";
-            count = 0;
+            InitGame();
             
         }
 
+        // Завершающие действия по выходу из игры.
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            gamers.Gamers.Add(gamer1);
-            gamers.Gamers.Add(gamer2);
+            if(gamer1 != null)
+            {
+                gamers.Gamers.Add(gamer1);
+            }
+            if(gamer2 != null)
+            {
+                gamers.Gamers.Add(gamer2);
+            }            
 
             SaveJSON();
+        }
+
+        // Подготовка элементов формы к началу игры.
+        protected void InitGame()
+        {
+            stopGame = false;
+            howSteps = 9;
+
+            nameReg.Visible = false;
+            btnReg.Visible = false;
+            nameSelect.Visible = false;
+            btnComeIn.Visible = false;
+            btnRepeat.Visible = false;
+            mVictory.Text = "";
+
+            labelGamer.Top = 35;
+            labelGamer.Visible = true;
+            labelGamer.Focus();
+            
+            AllNotYesEnabled(true);
+            AllBtnClear();
+
+            if(numGame == 0)
+            {
+                labelGamer.Text = gamer1.Name;
+            }
+            else
+            {
+                ChangeName();
+            }
+
+            numGame++;                                                                              
+        }
+    
+        // Наведении курсора на кнопку.
+        private void but_MouseEnter(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+                        
+            if(lastX)
+            {
+                btn.Text = "O";
+            }
+            else
+            {
+                btn.Text = "X";
+            }            
+        }
+
+        // Покидание курсором границ кнопки.
+        private void but_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+
+            if(btn.Enabled)
+            {
+                btn.Text = "";
+            }
+            
         }
     }
 
