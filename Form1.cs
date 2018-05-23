@@ -152,13 +152,9 @@ namespace CS_GUI
             else
             {
                 gamer2 = new Gamer(nameReg.Text);
-                nameReg.Visible = false;
-                btnReg.Visible = false;
-                nameSelect.Visible = false;
-                btnComeIn.Visible = false;
-                labelGamer.Top = 35;
-                labelGamer.Text = gamer1.Name;
+                
                 InitButton();
+                InitGame();
 
                 ToolStripLabel infoGamer2 = new ToolStripLabel();
                 infoGamer2.Text += "ИГРОК 2: " + name;
@@ -572,23 +568,42 @@ namespace CS_GUI
             }
 
             SaveJSON();
-        }                                
+        }
+
+        // Запуск новой игры с выбранными ранее игроками.
+        private void btnRepeat_Click(object sender, EventArgs e)
+        {
+            InitGame();
+
+        }
 
         // Запись списка игроков с параметрами.
         private void SaveJSON()
         {
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ListGamers));
 
-            using (FileStream fs = new FileStream("Gamers.json", FileMode.OpenOrCreate))
+            if (!FileIsLocked("Gamers.json", FileAccess.ReadWrite))
+            {                
+                using (FileStream fs = new FileStream("Gamers.json", FileMode.OpenOrCreate))
+                {
+                    jsonFormatter.WriteObject(fs, gamers);
+                }
+                // Не выведет, т.к. сохранение происходит по закрытию формы.
+                MessageBox.Show("Файл со списком игроков заблокирован. Данные сохранятся в новом файле.");
+            }
+            else
             {
-                jsonFormatter.WriteObject(fs, gamers);                
+                using (FileStream fs = new FileStream(DateTime.Now.ToFileTime() + "Gamers.json", FileMode.OpenOrCreate))
+                {
+                    jsonFormatter.WriteObject(fs, gamers);
+                }
             }
         }
 
         // Загрузка списка игроков с параметрами.
         protected void LoadJSON()
         {
-            using (FileStream fs = new FileStream("Gamers.json", FileMode.Open))
+            using (FileStream fs = new FileStream("Gamers.json", FileMode.Open, FileAccess.Read))
             {
                 DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ListGamers));
 
@@ -597,14 +612,26 @@ namespace CS_GUI
             }
         }
 
-        // Запуск новой игры с выбранными ранее игроками.
-        private void btnRepeat_Click(object sender, EventArgs e)
+        // Возвращает истину если файл заблокирован.
+        protected bool FileIsLocked(string path, FileAccess access)
         {
-            InitGame();
-            
-        }            
-    
-        
+            try
+            {
+                FileStream fs = new FileStream(path, FileMode.Open, access);
+                fs.Close();
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {                
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
     }
     
 }
