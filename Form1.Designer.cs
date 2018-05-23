@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.mVictory = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusInfo = new System.Windows.Forms.StatusStrip();
             this.btnComeIn = new System.Windows.Forms.Button();
             this.btnReg = new System.Windows.Forms.Button();
             this.labelGamer = new System.Windows.Forms.Label();
@@ -47,13 +47,13 @@
             this.mVictory.Text = "label1";
             this.mVictory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // statusStrip1
+            // statusInfo
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 470);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(358, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusInfo.Location = new System.Drawing.Point(0, 470);
+            this.statusInfo.Name = "statusInfo";
+            this.statusInfo.Size = new System.Drawing.Size(358, 22);
+            this.statusInfo.TabIndex = 2;
+            this.statusInfo.Text = "statusInfo";
             // 
             // btnComeIn
             // 
@@ -115,6 +115,7 @@
             this.btnRepeat.Text = "ПРОДОЛЖИТЬ ИГРУ";
             this.btnRepeat.UseVisualStyleBackColor = true;
             this.btnRepeat.Visible = false;
+            this.btnRepeat.Click += new System.EventHandler(this.btnRepeat_Click);
             // 
             // Form1
             // 
@@ -127,7 +128,7 @@
             this.Controls.Add(this.labelGamer);
             this.Controls.Add(this.btnReg);
             this.Controls.Add(this.btnComeIn);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusInfo);
             this.Controls.Add(this.mVictory);
             this.Name = "Form1";
             this.Text = "Игра Крестики-Нолики";
@@ -140,7 +141,7 @@
 
         #endregion
         private System.Windows.Forms.Label mVictory;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusInfo;
         private System.Windows.Forms.Button btnComeIn;
         private System.Windows.Forms.Button btnReg;
         private System.Windows.Forms.Label labelGamer;
