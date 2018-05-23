@@ -31,14 +31,16 @@ namespace CS_GUI
         public class Gamer
         {
             [DataMember]
-            public string Name { get; set; }
+            public string Name { get; set; }                        
             [DataMember]
-            public int HowVictories { get; set; }
+            public int HowTotalVictories { get; set; }
+            public int HowCurVictories { get; set; }
 
             public Gamer(string name)
             {
                 Name = name;
-                HowVictories = 0;
+                HowCurVictories = 0;
+                HowCurVictories = 0;
             }
         }
 
@@ -61,9 +63,7 @@ namespace CS_GUI
         }       
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-
-            mVictory.Text = "";
+        {            
 
             LoadJSON();            
 
@@ -79,14 +79,16 @@ namespace CS_GUI
         // Подготовка элементов формы к началу игры.
         protected void InitGame()
         {
+
             stopGame = false;
             howSteps = 9;
 
             nameReg.Visible = false;
-            btnReg.Visible = false;
             nameSelect.Visible = false;
+            btnReg.Visible = false;            
             btnComeIn.Visible = false;
             btnRepeat.Visible = false;
+            mVictory.Visible = true;
             mVictory.Text = "";
 
             labelGamer.Top = 35;
@@ -540,13 +542,15 @@ namespace CS_GUI
             {
                 if (labelGamer.Text == gamer1.Name)
                 {
-                    gamer1.HowVictories++;
-                    mVictory.Text += labelGamer.Text + " выигрывал " + gamer1.HowVictories + " раз!";
+                    gamer1.HowCurVictories++;
+                    mVictory.Text += labelGamer.Text + " выиграл " + gamer1.HowCurVictories + " раз!";
+                    mVictory.Text += "\nПобедил во всех играх " + (gamer1.HowTotalVictories + gamer1.HowCurVictories) + " раз!";
                 }
                 else
                 {
-                    gamer2.HowVictories++;
-                    mVictory.Text += labelGamer.Text + " выигрывал " + gamer2.HowVictories + " раз!";
+                    gamer2.HowCurVictories++;
+                    mVictory.Text += labelGamer.Text + " выигрывал " + gamer2.HowCurVictories + " раз!";
+                    mVictory.Text += "\nПобедил во всех играх " + (gamer2.HowTotalVictories + gamer2.HowCurVictories) + " раз!";
                 }                
 
                 btnRepeat.Visible = true;
@@ -558,10 +562,12 @@ namespace CS_GUI
         {
             if (gamer1 != null)
             {
+                gamer1.HowTotalVictories += gamer1.HowCurVictories;
                 gamers.Gamers.Add(gamer1);
             }
             if (gamer2 != null)
             {
+                gamer2.HowTotalVictories += gamer2.HowCurVictories;
                 gamers.Gamers.Add(gamer2);
             }
 

@@ -40,12 +40,13 @@
             // 
             // mVictory
             // 
-            this.mVictory.Location = new System.Drawing.Point(4, 416);
+            this.mVictory.Location = new System.Drawing.Point(4, 410);
             this.mVictory.Name = "mVictory";
             this.mVictory.Size = new System.Drawing.Size(350, 43);
             this.mVictory.TabIndex = 1;
             this.mVictory.Text = "label1";
             this.mVictory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.mVictory.Visible = false;
             // 
             // statusInfo
             // 
