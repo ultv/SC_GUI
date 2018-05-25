@@ -26,24 +26,39 @@ namespace CS_GUI
             Size = new Size(75, 75);
             Font = new Font("Arial", 10); //40);
             Click += Form1.buttonIJ_Click;
+            MouseEnter += Form1.buttonIJ_MouseEnter;
+            MouseLeave += Form1.buttonIJ_MouseLeave;
         }
 
         // Поочерёдная установка "крестик" или "нолик".
         public void SetBtnText(Game game)
         {
-            if (game.NowX)
+            if (game.PrevX)
             {
                 Text = "O";
-                game.NowX = false;
+                game.PrevX = false;
 
             }
             else
             {
                 Text = "X";
-                game.NowX = true;
+                game.PrevX = true;
             }
 
             Enabled = false;
+        }
+
+        // Подсветка кнопок при наведении курсора.
+        public void GetBtnText(Game game)
+        {
+            if (game.PrevX)
+            {
+                Text = "O";
+            }
+            else
+            {
+                Text = "X";
+            }
         }
     }
 

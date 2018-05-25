@@ -11,7 +11,7 @@ namespace CS_GUI
         public int NumGame { get; set; }
         public int HowStepToEnd { get; set; }
         public bool StopGame { get; set; }
-        public bool NowX { get; set; }
+        public bool PrevX { get; set; }
         public DateTime Date { get; set; }
         public string NameVictory { get; set; }
         public Player[] Players { get; set; }
@@ -21,7 +21,7 @@ namespace CS_GUI
         {
             HowStepToEnd = num * num;
             StopGame = false;
-            NowX = true;
+            PrevX = false;
             Date = DateTime.Now;
             Player player1 = new Player();
             Player player2 = new Player();

@@ -27,14 +27,35 @@ namespace CS_GUI
 
         static public void buttonIJ_Click(object sender, EventArgs e)
         {
-            ButtonIJ presBtn = ((ButtonIJ)sender);
+            ButtonIJ btn = ((ButtonIJ)sender);
 
-            presBtn.SetBtnText(game);
+            btn.SetBtnText(game);           
 
-            game.GameField.ReviseRows(presBtn.I);
-            game.GameField.ReviseCols(presBtn.J);
-            game.GameField.ReviseMainDiag(presBtn.I, presBtn.J);
-            game.GameField.ReviseSecDiag(presBtn.I, presBtn.J);
+            game.GameField.ReviseRows(btn.I);
+            game.GameField.ReviseCols(btn.J);
+            game.GameField.ReviseMainDiag(btn.I, btn.J);
+            game.GameField.ReviseSecDiag(btn.I, btn.J);
+
+        }
+
+        // Наведение курсора на кнопку.
+        static public void buttonIJ_MouseEnter(object sender, EventArgs e)
+        {
+            ButtonIJ btn = (ButtonIJ)sender;
+
+            btn.GetBtnText(game);
+                                    
+        }
+
+        // Покидание курсором границ кнопки.
+        static public void buttonIJ_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+
+            if (btn.Enabled)
+            {
+                btn.Text = "";
+            }
 
         }
     }
