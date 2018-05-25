@@ -14,10 +14,14 @@ namespace CS_GUI
     {
         static Game game;
 
+        public delegate void Start();
+        public event Start StartGame;
+
         public Form1()
         {
             game = new Game(this, 3);
             InitializeComponent();
+            StartGame += ShowPanelButtonIJ;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -29,12 +33,12 @@ namespace CS_GUI
         {
             ButtonIJ btn = ((ButtonIJ)sender);
 
-            btn.SetBtnText(game);           
-
+            btn.SetBtnText(game);
+            game.DecStep();
             game.GameField.ReviseRows(btn.I);
             game.GameField.ReviseCols(btn.J);
             game.GameField.ReviseMainDiag(btn.I, btn.J);
-            game.GameField.ReviseSecDiag(btn.I, btn.J);
+            game.GameField.ReviseSecDiag(btn.I, btn.J);            
 
         }
 
@@ -57,6 +61,49 @@ namespace CS_GUI
                 btn.Text = "";
             }
 
+        }
+
+        private void buttonComeIn_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void textBoxName_TextChanged(object sender, EventArgs e)
+        {
+            buttonRegistrate.Enabled = true;
+        }
+
+        private void buttonRegistrate_Click(object sender, EventArgs e)
+        {
+            string name = textBoxName.Text;
+
+            if (labelPlayer1.Enabled == true)
+            {                
+                game.Players[0].Name = name;
+                textBoxName.Clear();
+                labelPlayer1.Enabled = false;
+                labelPlayer2.Enabled = true;
+
+                ToolStripLabel infoPlayer1 = new ToolStripLabel();
+                infoPlayer1.Text += "Игрок 1: " + name;
+                statusStripInfo.Items.Add(infoPlayer1);                
+            }
+            else
+            {
+                game.Players[1].Name = name;
+                panelAccount.Visible = false;
+
+                ToolStripLabel infoPlayer2 = new ToolStripLabel();
+                infoPlayer2.Text += "Игрок 2: " + name;
+                statusStripInfo.Items.Add(infoPlayer2);
+
+                StartGame();
+            }            
+        }
+
+        public void ShowPanelButtonIJ()
+        {
+            game.GameField.panelButtonIJ.Visible = true;
         }
     }
 }

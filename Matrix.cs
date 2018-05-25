@@ -13,11 +13,23 @@ namespace CS_GUI
     {
         public int Size { get; set; }
         public ButtonIJ[,] btns;
+        public Panel panelButtonIJ;
+
+        public delegate void Equality(string message);
+        public event Equality EqualityRows;
+        public event Equality EqualityCols;
+        public event Equality EqualityMainDiag;
+        public event Equality EqualitySecDiag;        
+        //public event Equality NotVictory;
 
         public Matrix(Form1 form, int size, int top, int left)
         {
             Size = size;
             btns = new ButtonIJ[size, size];
+
+            panelButtonIJ = new Panel();
+            panelButtonIJ.AutoSize = true;
+            form.Controls.Add(panelButtonIJ);
 
             for (int i = 0; i < size; i++)
             {
@@ -25,9 +37,15 @@ namespace CS_GUI
                 {
                     btns[i, j] = new ButtonIJ(i, j, top, left);
 
-                    form.Controls.Add(btns[i, j]);
+                    panelButtonIJ.Controls.Add(btns[i, j]);
                 }
             }
+
+            Label namePlayer = new Label();
+            namePlayer.Text = "Имя";
+            panelButtonIJ.Controls.Add(namePlayer);
+
+            panelButtonIJ.Visible = false;
         }
 
         // Проверяет элементы строки на равенство первому элементу в строке.
@@ -41,7 +59,8 @@ namespace CS_GUI
                     return false;
             }
 
-            MessageBox.Show("Совпадение элементов строки");
+            EqualityRows("Совпадение элементов строки");
+            
             return true;
         }
 
@@ -56,7 +75,7 @@ namespace CS_GUI
                     return false;
             }
 
-            MessageBox.Show("Совпадение элементов столбца");
+            EqualityCols("Совпадение элементов столбца");
             return true;
         }
 
@@ -81,7 +100,7 @@ namespace CS_GUI
                         return false;
                 }
 
-                MessageBox.Show("Совпадение элементов главной диагонали");
+                EqualityMainDiag("Совпадение элементов главной диагонали");
                 return true;
             }
         }
@@ -102,7 +121,7 @@ namespace CS_GUI
                     return false;
             }
 
-            MessageBox.Show("Совпадение элементов побочной диагонали");
+            EqualitySecDiag("Совпадение элементов побочной диагонали");
             return true;
         }
 

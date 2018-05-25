@@ -3,39 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CS_GUI
 {
     public class Game
     {
         public int NumGame { get; set; }
-        public int HowStepToEnd { get; set; }
-        public bool StopGame { get; set; }
+        public int HowStepToEnd { get; set; }        
         public bool PrevX { get; set; }
         public DateTime Date { get; set; }
         public string NameVictory { get; set; }
         public Player[] Players { get; set; }
         public Matrix GameField { get; set; }
+        
+        public delegate void Stop(string message);
+        public event Stop StopGame;        
 
         public Game(Form1 form, int num)
         {
-            HowStepToEnd = num * num;
-            StopGame = false;
+            HowStepToEnd = num * num;          
             PrevX = false;
             Date = DateTime.Now;
             Player player1 = new Player();
             Player player2 = new Player();
             Players = new Player[] { player1, player2 };
-            GameField = new Matrix(form, num, 50, 50);
+            GameField = new Matrix(form, num, 120, 45);
+            GameField.EqualityRows += ShowResult;
+            GameField.EqualityCols += ShowResult;
+            GameField.EqualityMainDiag += ShowResult;
+            GameField.EqualitySecDiag += ShowResult;
+            StopGame += ShowResult;
 
         }
 
         public void DecStep()
         {
             HowStepToEnd--;
-            ///Выводит кол-во ходов до конца игры;
-            ///MessageBox.Show(HowStepToEnd.ToString());          
-        }        
+
+            if(HowStepToEnd == 0)
+            {
+                StopGame("Игра закончена.");
+            }
+        }
+
+        public void ShowResult(string message)
+        {
+            MessageBox.Show(message);
+        }
 
     }
 }

@@ -20,11 +20,11 @@ namespace CS_GUI
             I = i;
             J = j;
             Text = "";
-            Top = i * 75 + top;
-            Left = j * 75 + left;
+            Top = i * 100 + top;
+            Left = j * 100 + left;
             BackColor = Color.White;
-            Size = new Size(75, 75);
-            Font = new Font("Arial", 10); //40);
+            Size = new Size(100, 100);
+            Font = new Font("Arial", 60);
             Click += Form1.buttonIJ_Click;
             MouseEnter += Form1.buttonIJ_MouseEnter;
             MouseLeave += Form1.buttonIJ_MouseLeave;
