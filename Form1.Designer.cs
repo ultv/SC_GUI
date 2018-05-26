@@ -44,8 +44,10 @@
             this.buttonComeIn = new System.Windows.Forms.Button();
             this.comboBoxName = new System.Windows.Forms.ComboBox();
             this.panelInfo = new System.Windows.Forms.Panel();
+            this.labelFocus = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panelAccount.SuspendLayout();
+            this.panelGame.SuspendLayout();
             this.panelRegistrate.SuspendLayout();
             this.panelComeIn.SuspendLayout();
             this.panelInfo.SuspendLayout();
@@ -84,6 +86,7 @@
             // panelGame
             // 
             this.panelGame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelGame.Controls.Add(this.labelFocus);
             this.panelGame.Location = new System.Drawing.Point(271, 27);
             this.panelGame.Name = "panelGame";
             this.panelGame.Size = new System.Drawing.Size(240, 400);
@@ -200,6 +203,16 @@
             this.panelInfo.Size = new System.Drawing.Size(200, 100);
             this.panelInfo.TabIndex = 6;
             // 
+            // labelFocus
+            // 
+            this.labelFocus.AutoSize = true;
+            this.labelFocus.Location = new System.Drawing.Point(102, 169);
+            this.labelFocus.Name = "labelFocus";
+            this.labelFocus.Size = new System.Drawing.Size(35, 13);
+            this.labelFocus.TabIndex = 0;
+            this.labelFocus.Text = "label1";
+            this.labelFocus.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -217,6 +230,8 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panelAccount.ResumeLayout(false);
+            this.panelGame.ResumeLayout(false);
+            this.panelGame.PerformLayout();
             this.panelRegistrate.ResumeLayout(false);
             this.panelRegistrate.PerformLayout();
             this.panelComeIn.ResumeLayout(false);
@@ -245,6 +260,7 @@
         private System.Windows.Forms.ComboBox comboBoxName;
         private System.Windows.Forms.Button buttonComeIn;
         private System.Windows.Forms.Panel panelInfo;
+        private System.Windows.Forms.Label labelFocus;
     }
 }
 
