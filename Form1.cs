@@ -13,6 +13,7 @@ namespace CS_GUI
     public partial class Form1 : Form
     {
         static Game game;
+        Players players;
 
         //public delegate void Start(Label player, Label victory);
         //static public event Start StartGame;
@@ -26,8 +27,17 @@ namespace CS_GUI
             panelAccount.Left = 20;
 
             game = new Game(this, panelBtns, 3);
-
             game.GameField.NowEquality += FinalyGame;
+
+            players = new Players();
+            players = players.LoadJSON();
+
+            foreach (Player pl in players.PlayerS)
+            {
+                comboBoxName.Items.Add(pl.Name);
+            }
+            comboBoxName.Enabled = true;
+            comboBoxName.Text = comboBoxName.Items[0].ToString();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -110,7 +120,7 @@ namespace CS_GUI
 
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        {                   
             Application.Exit();           
         }
 
@@ -124,6 +134,7 @@ namespace CS_GUI
             if(labelPlayer1.Enabled)
             {
                 game.Players[0].Name = textBoxName.Text;
+                players.PlayerS.Add(game.Players[0]);
 
                 ToolStripLabel infoGamer1 = new ToolStripLabel();
                 infoGamer1.Text += "Игрок 1: " + game.Players[0].Name;
@@ -137,6 +148,7 @@ namespace CS_GUI
             else
             {
                 game.Players[1].Name = textBoxName.Text;
+                players.PlayerS.Add(game.Players[1]);
 
                 ToolStripLabel infoGamer2 = new ToolStripLabel();
                 infoGamer2.Text += "Игрок 2: " + game.Players[1].Name;
@@ -174,13 +186,12 @@ namespace CS_GUI
             MessageBox.Show(message);
             buttonNewGame.Visible = true;
             buttonNewGame.Focus();
-
-            game.HowStep++;
-            game.SaveJSON();
         }
 
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
+            game.SaveJSON();
+            players.SaveJSON();
             InitGame();
         }
 
@@ -194,7 +205,15 @@ namespace CS_GUI
                     game.GameField.Cells[i, j].Enabled = true;
                 }
             }
+        }      
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (game.Players[0].Name != null)
+            {
+                game.SaveJSON();
+                players.SaveJSON();
+            }
         }
-    
     }
 }

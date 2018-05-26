@@ -90,7 +90,7 @@ namespace CS_GUI
                     jsonFormatter.WriteObject(fs, this);
                 }
                 // Не выведет, т.к. сохранение происходит по закрытию формы.
-                MessageBox.Show("Файл со списком игроков заблокирован. Данные сохранятся в новом файле.");
+                MessageBox.Show("Файл с историей заблокирован. Данные сохранятся в новом файле.");
             }
             else
             {
@@ -100,6 +100,22 @@ namespace CS_GUI
                 }
             }
         }
+
+        // Загрузка списка игроков с параметрами.
+        protected Game LoadJSON()
+        {
+            Game game;
+
+            using (FileStream fs = new FileStream("Game.json", FileMode.Open, FileAccess.Read))
+            {
+                DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Game));
+
+                game = (Game)jsonFormatter.ReadObject(fs);
+            }
+
+            return game;
+        }
+
 
         // Возвращает истину если файл заблокирован.
         protected bool FileIsLocked(string path, FileAccess access)

@@ -43,12 +43,12 @@
             this.buttonRegistrate = new System.Windows.Forms.Button();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.panelGame = new System.Windows.Forms.Panel();
+            this.buttonNewGame = new System.Windows.Forms.Button();
+            this.panelBtns = new System.Windows.Forms.Panel();
             this.labelNameVictory = new System.Windows.Forms.Label();
             this.labelNamePlayer = new System.Windows.Forms.Label();
             this.labelFocus = new System.Windows.Forms.Label();
             this.panelResult = new System.Windows.Forms.Panel();
-            this.panelBtns = new System.Windows.Forms.Panel();
-            this.buttonNewGame = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panelAccount.SuspendLayout();
             this.panelInfo.SuspendLayout();
@@ -76,7 +76,7 @@
             // 
             // statusStripInfo
             // 
-            this.statusStripInfo.Location = new System.Drawing.Point(0, 440);
+            this.statusStripInfo.Location = new System.Drawing.Point(0, 460);
             this.statusStripInfo.Name = "statusStripInfo";
             this.statusStripInfo.Size = new System.Drawing.Size(784, 22);
             this.statusStripInfo.TabIndex = 1;
@@ -204,6 +204,24 @@
             this.panelGame.TabIndex = 3;
             this.panelGame.Visible = false;
             // 
+            // buttonNewGame
+            // 
+            this.buttonNewGame.Location = new System.Drawing.Point(80, 353);
+            this.buttonNewGame.Name = "buttonNewGame";
+            this.buttonNewGame.Size = new System.Drawing.Size(75, 23);
+            this.buttonNewGame.TabIndex = 4;
+            this.buttonNewGame.Text = "Новая игра";
+            this.buttonNewGame.UseVisualStyleBackColor = true;
+            this.buttonNewGame.Visible = false;
+            this.buttonNewGame.Click += new System.EventHandler(this.buttonNewGame_Click);
+            // 
+            // panelBtns
+            // 
+            this.panelBtns.Location = new System.Drawing.Point(3, 51);
+            this.panelBtns.Name = "panelBtns";
+            this.panelBtns.Size = new System.Drawing.Size(232, 249);
+            this.panelBtns.TabIndex = 3;
+            // 
             // labelNameVictory
             // 
             this.labelNameVictory.Location = new System.Drawing.Point(8, 325);
@@ -241,37 +259,23 @@
             this.panelResult.TabIndex = 3;
             this.panelResult.Visible = false;
             // 
-            // panelBtns
-            // 
-            this.panelBtns.Location = new System.Drawing.Point(3, 51);
-            this.panelBtns.Name = "panelBtns";
-            this.panelBtns.Size = new System.Drawing.Size(232, 249);
-            this.panelBtns.TabIndex = 3;
-            // 
-            // buttonNewGame
-            // 
-            this.buttonNewGame.Location = new System.Drawing.Point(80, 353);
-            this.buttonNewGame.Name = "buttonNewGame";
-            this.buttonNewGame.Size = new System.Drawing.Size(75, 23);
-            this.buttonNewGame.TabIndex = 4;
-            this.buttonNewGame.Text = "Новая игра";
-            this.buttonNewGame.UseVisualStyleBackColor = true;
-            this.buttonNewGame.Visible = false;
-            this.buttonNewGame.Click += new System.EventHandler(this.buttonNewGame_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 462);
+            this.ClientSize = new System.Drawing.Size(784, 482);
             this.Controls.Add(this.panelResult);
             this.Controls.Add(this.panelGame);
             this.Controls.Add(this.panelAccount);
             this.Controls.Add(this.statusStripInfo);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(800, 520);
+            this.MinimumSize = new System.Drawing.Size(300, 520);
             this.Name = "Form1";
             this.Text = "Крестики-нолики";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
