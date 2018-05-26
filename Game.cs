@@ -14,13 +14,16 @@ namespace CS_GUI
         public bool PrevX { get; set; }
         public DateTime Date { get; set; }
         public string NameVictory { get; set; }
-        public Player[] Players { get; set; }
+        public Player[] Players { get; set; }        
         public Matrix GameField { get; set; }
+        public int NowPlaying { get; set; }
+
+
 
         public delegate void Stop(string message);
         public event Stop StopGame;
 
-        public Game(Panel panel, int size)
+        public Game(Form1 form, Panel panel, int size)
         {
             HowStepToEnd = size * size;
             PrevX = false;
@@ -28,13 +31,10 @@ namespace CS_GUI
             Player player1 = new Player();
             Player player2 = new Player();
             Players = new Player[] { player1, player2 };
-            GameField = new Matrix(panel, size);
+            GameField = new Matrix(form, panel, size);
 
-            //GameField.EqualityRows += ShowResult;
-            //GameField.EqualityCols += ShowResult;
-            //GameField.EqualityMainDiag += ShowResult;
-            //GameField.EqualitySecDiag += ShowResult;
             StopGame += ShowResult;
+            StopGame += form.FinalyGame;    
 
         }
 
@@ -51,6 +51,18 @@ namespace CS_GUI
         public void ShowResult(string message)
         {
             MessageBox.Show(message);
+        }
+
+        public void ChangePlaying()
+        {            
+            if (NowPlaying == 0)
+            {
+                NowPlaying = 1;
+            }
+            else
+            {
+                NowPlaying = 0;
+            }
         }
 
     }

@@ -13,7 +13,11 @@ namespace CS_GUI
         public int Size { get; set; }
         public Button[,] Cells { get; set; }
 
-        public Matrix(Panel panel, int size)
+        public delegate void Equality(string message);
+        public event Equality NowEquality;
+        
+
+        public Matrix(Form1 form, Panel panel, int size)
         {
             Size = size;
             Cells = new Button[size, size];
@@ -26,13 +30,13 @@ namespace CS_GUI
 
                     Cells[i, j].Height = 75;
                     Cells[i, j].Width = 75;
-                    Cells[i, j].Top = i * 75 + 70;
-                    Cells[i, j].Left = j * 75 + 7;
+                    Cells[i, j].Top = i * 75 + 25;
+                    Cells[i, j].Left = j * 75 + 5;
                     Cells[i, j].Font = new Font("Arial", 30);
                     Cells[i, j].Name = (i * size + j).ToString();                    
-                    Cells[i, j].Click += Form1.Button_Click;
-                    Cells[i, j].MouseEnter += Form1.Button_MouseEnter;
-                    Cells[i, j].MouseLeave += Form1.Button_MouseLeave;
+                    Cells[i, j].Click += form.Button_Click;                    
+                    Cells[i, j].MouseEnter += form.Button_MouseEnter;
+                    Cells[i, j].MouseLeave += form.Button_MouseLeave;
 
                     panel.Controls.Add(Cells[i, j]);
                 }
@@ -53,7 +57,7 @@ namespace CS_GUI
                     return false;
             }
 
-            MessageBox.Show("Совпадение элементов строки");
+            NowEquality($"Совпадение элементов {i + 1} строки");            
 
             return true;
         }
@@ -72,7 +76,7 @@ namespace CS_GUI
                     return false;
             }
 
-            MessageBox.Show("Совпадение элементов столбца");
+            NowEquality($"Совпадение элементов {j + 1} столбца");            
             return true;
         }
 
@@ -105,7 +109,7 @@ namespace CS_GUI
                         return false;
                 }
 
-                MessageBox.Show("Совпадение элементов главной диагонали");
+                NowEquality("Совпадение элементов главной диагонали");
                 return true;
             }
         }
@@ -137,12 +141,10 @@ namespace CS_GUI
                         return false;
                 }
             }
-                                      
-            MessageBox.Show("Совпадение элементов побочной диагонали");
+
+            NowEquality("Совпадение элементов побочной диагонали");
             return true;
         }
-
-
 
     }
 }
