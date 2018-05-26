@@ -39,10 +39,11 @@ namespace CS_GUI
         {
             
             Button btn = ((Button)sender);
-
-            SetBtnText(game, btn);
+            SetBtnText(game, btn);                        
 
             int position = Int32.Parse(btn.Name);
+            game.Steps[game.HowStep] = position;
+
             game.GameField.ReviseRows(position);
             game.GameField.ReviseCols(position);
             game.GameField.ReviseMainDiag(position);
@@ -54,7 +55,9 @@ namespace CS_GUI
             {
                 game.ChangePlaying();
                 labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
-            }            
+            }
+            
+            game.IncStep();
         }
 
         // Поочерёдная установка "крестик" или "нолик".
@@ -153,7 +156,8 @@ namespace CS_GUI
             panelGame.Visible = true;
 
             game.NowPlaying = 0;
-            game.NameVictory = "Ничья";
+            game.NameVictory = "Ничья";            
+            game.HowStep = 0;
             labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
             labelNameVictory.Visible = false;
             panelBtns.Enabled = true;
@@ -170,6 +174,9 @@ namespace CS_GUI
             MessageBox.Show(message);
             buttonNewGame.Visible = true;
             buttonNewGame.Focus();
+
+            game.HowStep++;
+            game.SaveJSON();
         }
 
         private void buttonNewGame_Click(object sender, EventArgs e)

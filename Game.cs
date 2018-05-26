@@ -4,47 +4,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.IO;
 
 namespace CS_GUI
 {
+    [DataContract]
     class Game
     {
-        public int NumGame { get; set; }
-        public int HowStepToEnd { get; set; }
-        public bool PrevX { get; set; }
-        public DateTime Date { get; set; }
+        [DataMember]
+        public string Date { get; set; }
+        [DataMember]
+        public Player[] Players { get; set; }
+        [DataMember]
         public string NameVictory { get; set; }
-        public Player[] Players { get; set; }        
-        public Matrix GameField { get; set; }
+        [DataMember]
+        public int HowStep { get; set; }
+        [DataMember]
+        public int [] Steps { get; set; }
+ 
         public int NowPlaying { get; set; }
-
-
+        public bool PrevX { get; set; }
+        public Matrix GameField { get; set; }        
 
         public delegate void Stop(string message);
         public event Stop StopGame;
 
         public Game(Form1 form, Panel panel, int size)
-        {
-            HowStepToEnd = size * size;
+        {            
+            HowStep = 0;
             PrevX = false;
-            Date = DateTime.Now;
+            Date = DateTime.Now.ToString();
             Player player1 = new Player();
             Player player2 = new Player();
             Players = new Player[] { player1, player2 };
             GameField = new Matrix(form, panel, size);
 
-            StopGame += ShowResult;
-            StopGame += form.FinalyGame;    
-
-        }
-
-        public void DecStep()
-        {
-            HowStepToEnd--;
-
-            if (HowStepToEnd == 0)
+            int MaxSteps = GameField.Size * GameField.Size;
+            Steps = new int [MaxSteps];
+            for (int i = 0; i < MaxSteps; i++)
             {
-                StopGame("Игра закончена.");
+                Steps[i] = -1;
+            }
+
+            StopGame += ShowResult;        
+        }       
+
+        public void IncStep()
+        {
+            HowStep++;
+
+            if ((HowStep == (GameField.Size * GameField.Size)) && (NameVictory == "Ничья"))
+            {
+                StopGame("Нет победителя.");
             }
         }
 
@@ -62,6 +75,48 @@ namespace CS_GUI
             else
             {
                 NowPlaying = 0;
+            }
+        }
+
+        // Запись истории.
+        public void SaveJSON()
+        {
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Game));
+
+            if (!FileIsLocked("Game.json", FileAccess.ReadWrite))
+            {
+                using (FileStream fs = new FileStream("Game.json", FileMode.Append))
+                {
+                    jsonFormatter.WriteObject(fs, this);
+                }
+                // Не выведет, т.к. сохранение происходит по закрытию формы.
+                MessageBox.Show("Файл со списком игроков заблокирован. Данные сохранятся в новом файле.");
+            }
+            else
+            {
+                using (FileStream fs = new FileStream(DateTime.Now.ToFileTime() + "Game.json", FileMode.OpenOrCreate))
+                {
+                    jsonFormatter.WriteObject(fs, this);
+                }
+            }
+        }
+
+        // Возвращает истину если файл заблокирован.
+        protected bool FileIsLocked(string path, FileAccess access)
+        {
+            try
+            {
+                FileStream fs = new FileStream(path, FileMode.Open, access);
+                fs.Close();
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
