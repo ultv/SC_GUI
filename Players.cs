@@ -35,16 +35,8 @@ namespace CS_GUI
                 //MessageBox.Show("Файл со списком игроков заблокирован. Данные сохранятся в новом файле.");
             }
             else
-            {
-                ////////////////////
-
-
-
-
-                string name1 = PlayerS[0].Name;
-                string name2 = PlayerS[1].Name;
-                string date = DateTime.Now.ToShortDateString();
-                using (FileStream fs = new FileStream(name1 + " VS " + name2 + " " + date + "Players.json", FileMode.OpenOrCreate))
+            {                
+                using (FileStream fs = new FileStream(DateTime.Now.ToString() + "Players.json", FileMode.OpenOrCreate))
                 {
                     jsonFormatter.WriteObject(fs, this);
                 }

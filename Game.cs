@@ -100,9 +100,8 @@ namespace CS_GUI
             string time = DateTime.Now.ToLongTimeString();
             time = time.Replace(":", "..");
 
-            using (FileStream fs = new FileStream(name1 + " VS " + name2 + " " + date + " " + time + ".json", FileMode.OpenOrCreate))
-
-           // using (FileStream fs = new FileStream("Game_" + DateTime.Now.ToFileTime() + ".json", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream($"{name1} VS {name2} {date} {time}.json", FileMode.OpenOrCreate))
+           
                 {
                     jsonFormatter.WriteObject(fs, this);
                 }
