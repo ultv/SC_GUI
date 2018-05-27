@@ -61,13 +61,22 @@ namespace CS_GUI
 
             labelFocus.Focus();
 
+            // Пока идёт игра - результат принимаем за ничейный.
             if (game.NameVictory == "Ничья")
             {
                 game.ChangePlaying();
                 labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
-            }
+            }            
             
             game.IncStep();
+
+            
+            if (game.Repeat && game.NameVictory == "Ничья")
+            {
+                //System.Threading.Thread.Sleep(1000); /// Не подходит - "Скрывается" имя игрока.                
+                MessageBox.Show("Смотреть следующий ход.");
+            }
+            
         }
 
         // Поочерёдная установка "крестик" или "нолик".
@@ -173,15 +182,34 @@ namespace CS_GUI
             labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
             labelNameVictory.Visible = false;
             panelBtns.Enabled = true;
+            game.Repeat = false;
             RestoreBtns();
+            
         }
 
         // Действия по завершению игры.
+        // На повторе меняется последовательновть имен игроков.
+        // Показываем кто сделал ход, а не будет делать.
         public void FinalyGame(string message)
         {
-            game.NameVictory = game.Players[game.NowPlaying].Name;
-            labelNameVictory.Visible = true;
-            labelNameVictory.Text = "Победил: " + game.NameVictory + " !";            
+            if(!game.Repeat)
+            {
+                game.NameVictory = game.Players[game.NowPlaying].Name;
+                labelNameVictory.Visible = true;
+                labelNameVictory.Text = "Победил: " + game.NameVictory + " !";
+            }
+            else
+            {
+                if(game.NameVictory == "Ничья")
+                {
+                    game.ChangePlaying();
+                    labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
+                    game.NameVictory = game.Players[game.NowPlaying].Name;
+                    labelNameVictory.Visible = true;
+                    labelNameVictory.Text = "Победил: " + game.NameVictory + " !";
+                }                
+            }
+
             panelBtns.Enabled = false;
             MessageBox.Show(message);
             buttonNewGame.Visible = true;
@@ -207,13 +235,82 @@ namespace CS_GUI
             }
         }      
 
+        // Сохраняем если не повтор и не выход до регистрации.
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (game.Players[0].Name != null)
+            if ((game.Players[0].Name != null) && !game.Repeat)
             {
                 game.SaveJSON();
                 players.SaveJSON();
             }
+        }
+
+        private void buttonComeIn_Click(object sender, EventArgs e)
+        {
+            if (labelPlayer1.Enabled)
+            {
+                game.Players[0].Name = comboBoxName.Text;
+                players.PlayerS.Add(game.Players[0]);
+
+                ToolStripLabel infoGamer1 = new ToolStripLabel();
+                infoGamer1.Text += "Игрок 1: " + game.Players[0].Name;
+                statusStripInfo.Items.Add(infoGamer1);
+
+                labelPlayer1.Enabled = false;
+                labelPlayer2.Enabled = true;
+                //textBoxName.Clear();
+                //buttonRegistrate.Enabled = false;
+            }
+            else
+            {
+                game.Players[1].Name = comboBoxName.Text;
+                players.PlayerS.Add(game.Players[1]);
+
+                ToolStripLabel infoGamer2 = new ToolStripLabel();
+                infoGamer2.Text += "Игрок 2: " + game.Players[1].Name;
+                statusStripInfo.Items.Add(infoGamer2);
+
+                InitGame();
+
+            }
+        }
+
+        private void посмотретьИгруToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(!game.Repeat)
+            {
+                game.SaveJSON();
+            }
+
+
+            if (openFileDialogGame.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
+                
+            string path = openFileDialogGame.FileName;
+
+            Game gameRepeat = new Game(this, panelBtns, 3);
+            gameRepeat = gameRepeat.LoadJSON(path); /// У загруженного не все параметры Size = null...
+            InitGame();
+            
+            //На повторе показываем игравшего, а не чья очередь.
+            game.ChangePlaying();
+
+            game.Players[0].Name = gameRepeat.Players[0].Name;
+            game.Players[1].Name = gameRepeat.Players[1].Name;            
+            game.Repeat = true;
+                       
+            panelAccount.Enabled = false;
+           
+            for(int i = 0; i < gameRepeat.HowStep; i++)
+            {                
+                int position = gameRepeat.Steps[i];
+                int ii = position / 3; /// gameRepeat.GameField.Size /// нету. Брать у Game?
+                int jj = position % 3; /// gameRepeat.GameField.Size
+               
+                game.GameField.Cells[ii, jj].PerformClick();
+            }            
         }
     }
 }

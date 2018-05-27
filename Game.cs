@@ -26,10 +26,13 @@ namespace CS_GUI
  
         public int NowPlaying { get; set; }
         public bool PrevX { get; set; }
+        public bool Repeat { get; set; }
         public Matrix GameField { get; set; }        
 
         public delegate void Stop(string message);
         public event Stop StopGame;
+
+        //public Game() { }
 
         public Game(Form1 form, Panel panel, int size)
         {            
@@ -39,14 +42,16 @@ namespace CS_GUI
             Player player1 = new Player();
             Player player2 = new Player();
             Players = new Player[] { player1, player2 };
-            GameField = new Matrix(form, panel, size);
-
-            int MaxSteps = GameField.Size * GameField.Size;
-            Steps = new int [MaxSteps];
+            GameField = new Matrix(form, panel, size);            
+            Steps = new int [GameField.Size * GameField.Size];
+            Repeat = false;
+            
+            /* /// уже не надо
             for (int i = 0; i < MaxSteps; i++)
             {
                 Steps[i] = -1;
             }
+            */
 
             StopGame += ShowResult;        
         }       
@@ -83,30 +88,33 @@ namespace CS_GUI
         {
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Game));
 
-            if (!FileIsLocked("Game.json", FileAccess.ReadWrite))
-            {
-                using (FileStream fs = new FileStream("Game.json", FileMode.Append))
+            //if (!FileIsLocked("Game.json", FileAccess.ReadWrite))
+            //{
+            //     using (FileStream fs = new FileStream("Game.json", FileMode.Create))
+            //    {
+            //        jsonFormatter.WriteObject(fs, this);
+            ///    }
+            ///// Не выведет, т.к. сохранение происходит по закрытию формы.
+            ///    MessageBox.Show("Файл с историей заблокирован. Данные сохранятся в новом файле.");
+            //  }
+            //  else
+            //  {
+
+                string date = DateTime.Now.ToString();
+
+                using (FileStream fs = new FileStream("Game_" + DateTime.Now.ToFileTime() + ".json", FileMode.OpenOrCreate))
                 {
                     jsonFormatter.WriteObject(fs, this);
                 }
-                // Не выведет, т.к. сохранение происходит по закрытию формы.
-                MessageBox.Show("Файл с историей заблокирован. Данные сохранятся в новом файле.");
-            }
-            else
-            {
-                using (FileStream fs = new FileStream(DateTime.Now.ToFileTime() + "Game.json", FileMode.OpenOrCreate))
-                {
-                    jsonFormatter.WriteObject(fs, this);
-                }
-            }
+          //  }
         }
 
         // Загрузка списка игроков с параметрами.
-        protected Game LoadJSON()
+        public Game LoadJSON(string path)
         {
             Game game;
 
-            using (FileStream fs = new FileStream("Game.json", FileMode.Open, FileAccess.Read))
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Game));
 

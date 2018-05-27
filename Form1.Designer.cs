@@ -49,6 +49,8 @@
             this.labelNamePlayer = new System.Windows.Forms.Label();
             this.labelFocus = new System.Windows.Forms.Label();
             this.panelResult = new System.Windows.Forms.Panel();
+            this.посмотретьИгруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialogGame = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.panelAccount.SuspendLayout();
             this.panelInfo.SuspendLayout();
@@ -60,6 +62,7 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.посмотретьИгруToolStripMenuItem,
             this.выходToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -160,6 +163,7 @@
             this.buttonComeIn.TabIndex = 4;
             this.buttonComeIn.Text = "Войти";
             this.buttonComeIn.UseVisualStyleBackColor = true;
+            this.buttonComeIn.Click += new System.EventHandler(this.buttonComeIn_Click);
             // 
             // panelRegistrate
             // 
@@ -259,6 +263,17 @@
             this.panelResult.TabIndex = 3;
             this.panelResult.Visible = false;
             // 
+            // посмотретьИгруToolStripMenuItem
+            // 
+            this.посмотретьИгруToolStripMenuItem.Name = "посмотретьИгруToolStripMenuItem";
+            this.посмотретьИгруToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
+            this.посмотретьИгруToolStripMenuItem.Text = "Посмотреть игру";
+            this.посмотретьИгруToolStripMenuItem.Click += new System.EventHandler(this.посмотретьИгруToolStripMenuItem_Click);
+            // 
+            // openFileDialogGame
+            // 
+            this.openFileDialogGame.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -315,6 +330,8 @@
         private System.Windows.Forms.Label labelNameVictory;
         private System.Windows.Forms.Panel panelBtns;
         private System.Windows.Forms.Button buttonNewGame;
+        private System.Windows.Forms.ToolStripMenuItem посмотретьИгруToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialogGame;
     }
 }
 
