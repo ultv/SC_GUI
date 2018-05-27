@@ -15,9 +15,6 @@ namespace CS_GUI
         static Game game;
         Players players;
 
-        //public delegate void Start(Label player, Label victory);
-        //static public event Start StartGame;
-
         public Form1()
         {            
             InitializeComponent();
@@ -36,8 +33,14 @@ namespace CS_GUI
             {
                 comboBoxName.Items.Add(pl.Name);
             }
-            comboBoxName.Enabled = true;
-            comboBoxName.Text = comboBoxName.Items[0].ToString();
+
+            if(comboBoxName.Items.Count != 0)
+            {
+                comboBoxName.Enabled = true;
+                comboBoxName.Text = comboBoxName.Items[0].ToString();
+                buttonComeIn.Enabled = true;
+            }
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -66,17 +69,29 @@ namespace CS_GUI
             {
                 game.ChangePlaying();
                 labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
-            }            
-            
+            }
+
             game.IncStep();
 
-            
             if (game.Repeat && game.NameVictory == "Ничья")
             {
                 //System.Threading.Thread.Sleep(1000); /// Не подходит - "Скрывается" имя игрока.                
-                MessageBox.Show("Смотреть следующий ход.");
-            }
-            
+                if(game.HowStep != (game.GameField.Size * game.GameField.Size))
+                {
+                    MessageBox.Show("Смотреть следующий ход.");                    
+                }
+                else
+                {
+                    NoVictory("");
+                }
+            }           
+        }
+
+        public void NoVictory(string message)
+        {
+            buttonNewGame.Visible = true;
+            buttonNewGame.Focus();
+            посмотретьИгруToolStripMenuItem.Enabled = true;
         }
 
         // Поочерёдная установка "крестик" или "нолик".
@@ -220,6 +235,7 @@ namespace CS_GUI
             labelNameVictory.Visible = false;
             panelBtns.Enabled = true;
             game.Repeat = false;
+            buttonNewGame.Visible = false;
             RestoreBtns();
             посмотретьИгруToolStripMenuItem.Enabled = false;
 
@@ -234,6 +250,8 @@ namespace CS_GUI
             if(!game.Repeat)
             {
                 game.NameVictory = game.Players[game.NowPlaying].Name;
+                players.PlayerS[FindIndexByName(game.NameVictory)].CurVic++;
+                players.PlayerS[FindIndexByName(game.NameVictory)].TotalVic++;
                 labelNameVictory.Visible = true;
                 labelNameVictory.Text = "Победил: " + game.NameVictory + " !";
             }
@@ -243,7 +261,7 @@ namespace CS_GUI
                 {
                     game.ChangePlaying();
                     labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
-                    game.NameVictory = game.Players[game.NowPlaying].Name;
+                    game.NameVictory = game.Players[game.NowPlaying].Name;                    
                     labelNameVictory.Visible = true;
                     labelNameVictory.Text = "Победил: " + game.NameVictory + " !";
                 }                
@@ -256,11 +274,33 @@ namespace CS_GUI
             посмотретьИгруToolStripMenuItem.Enabled = true;
         }
 
+        public int FindIndexByName(string name)
+        {
+            int index = 0;
+            
+            foreach (Player p in players.PlayerS)
+            {
+                if (p.Name == name)
+                {            
+                    index = players.PlayerS.IndexOf(p);
+                }
+            }
+
+            return index;
+        }
+
+
         // Реакция на кнопку - Новая игра.
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
-            game.SaveJSON();
-            players.SaveJSON();
+            if(!game.Repeat)
+            {
+                game.SaveJSON();
+            }
+            
+            /// players.SaveJSON(); /// результаты нужны. - пусть копятся, сохраним при выходе.
+
+
             InitGame();
         }
 
@@ -283,6 +323,7 @@ namespace CS_GUI
         {
             if ((game.Players[0].Name != null) && !game.Repeat)
             {
+                
                 players.SaveJSON();
 
                 if((game.HowStep < 9) && (game.NameVictory == "Ничья"))
@@ -359,7 +400,9 @@ namespace CS_GUI
 
 
         private void посмотретьИгруToolStripMenuItem_Click(object sender, EventArgs e)
-        {           
+        {
+            buttonNewGame.Visible = false;
+
             // Сохранение последней перед просмотром.
             if (!game.Repeat)
             {

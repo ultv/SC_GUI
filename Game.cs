@@ -30,9 +30,7 @@ namespace CS_GUI
         public Matrix GameField { get; set; }        
 
         public delegate void Stop(string message);
-        public event Stop StopGame;
-
-        //public Game() { }
+        public event Stop StopGame;    
 
         public Game(Form1 form, Panel panel, int size)
         {            
@@ -45,16 +43,10 @@ namespace CS_GUI
             GameField = new Matrix(form, panel, size);            
             Steps = new int [GameField.Size * GameField.Size];
             Repeat = false;
-            NameVictory = "Ничья";
-            
-            /* /// уже не надо
-            for (int i = 0; i < MaxSteps; i++)
-            {
-                Steps[i] = -1;
-            }
-            */
+            NameVictory = "Ничья";                        
 
-            StopGame += ShowResult;        
+            StopGame += ShowResult;
+            StopGame += form.NoVictory;
         }       
 
         public void IncStep()
@@ -101,9 +93,16 @@ namespace CS_GUI
             //  else
             //  {
 
-                string date = DateTime.Now.ToString();
 
-                using (FileStream fs = new FileStream("Game_" + DateTime.Now.ToFileTime() + ".json", FileMode.OpenOrCreate))
+            string name1 = Players[0].Name;
+            string name2 = Players[1].Name;
+            string date = DateTime.Now.ToShortDateString();
+            string time = DateTime.Now.ToLongTimeString();
+            time = time.Replace(":", "..");
+
+            using (FileStream fs = new FileStream(name1 + " VS " + name2 + " " + date + " " + time + ".json", FileMode.OpenOrCreate))
+
+           // using (FileStream fs = new FileStream("Game_" + DateTime.Now.ToFileTime() + ".json", FileMode.OpenOrCreate))
                 {
                     jsonFormatter.WriteObject(fs, this);
                 }

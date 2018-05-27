@@ -156,6 +156,7 @@
             // 
             // comboBoxName
             // 
+            this.comboBoxName.Enabled = false;
             this.comboBoxName.FormattingEnabled = true;
             this.comboBoxName.Location = new System.Drawing.Point(26, 21);
             this.comboBoxName.Name = "comboBoxName";
@@ -165,6 +166,7 @@
             // 
             // buttonComeIn
             // 
+            this.buttonComeIn.Enabled = false;
             this.buttonComeIn.Location = new System.Drawing.Point(27, 61);
             this.buttonComeIn.Name = "buttonComeIn";
             this.buttonComeIn.Size = new System.Drawing.Size(145, 23);

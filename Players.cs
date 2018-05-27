@@ -36,7 +36,15 @@ namespace CS_GUI
             }
             else
             {
-                using (FileStream fs = new FileStream(DateTime.Now.ToFileTime() + "Players.json", FileMode.OpenOrCreate))
+                ////////////////////
+
+
+
+
+                string name1 = PlayerS[0].Name;
+                string name2 = PlayerS[1].Name;
+                string date = DateTime.Now.ToShortDateString();
+                using (FileStream fs = new FileStream(name1 + " VS " + name2 + " " + date + "Players.json", FileMode.OpenOrCreate))
                 {
                     jsonFormatter.WriteObject(fs, this);
                 }
