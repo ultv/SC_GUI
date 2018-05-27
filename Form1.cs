@@ -135,7 +135,44 @@ namespace CS_GUI
 
         private void textBoxName_TextChanged(object sender, EventArgs e)
         {
-            buttonRegistrate.Enabled = true;
+
+            if (!IsExistName(textBoxName.Text))
+            {
+                buttonRegistrate.Enabled = true;
+
+                if (statusStripInfo.Items.Count != 0)
+                {
+                    if (statusStripInfo.Items[statusStripInfo.Items.Count - 1].Text.Contains(" уже зарегистрирован."))
+                    {
+                        statusStripInfo.Items.RemoveAt(statusStripInfo.Items.Count - 1);
+                    }
+                }
+            }
+            else
+            {
+                buttonRegistrate.Enabled = false;
+
+                ToolStripLabel infoGamerExist = new ToolStripLabel();
+                infoGamerExist.Text += textBoxName.Text + " уже зарегистрирован.";
+                statusStripInfo.Items.Add(infoGamerExist);
+            }
+      
+        }
+
+
+        // Возвращает истину если игрок уже зарегистрирован.
+        private bool IsExistName(string name)
+        {
+
+            foreach (Player p in players.PlayerS)
+            {
+                if (p.Name == name)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void buttonRegistrate_Click(object sender, EventArgs e)
@@ -184,7 +221,9 @@ namespace CS_GUI
             panelBtns.Enabled = true;
             game.Repeat = false;
             RestoreBtns();
-            
+            посмотретьИгруToolStripMenuItem.Enabled = false;
+
+
         }
 
         // Действия по завершению игры.
@@ -214,8 +253,10 @@ namespace CS_GUI
             MessageBox.Show(message);
             buttonNewGame.Visible = true;
             buttonNewGame.Focus();
+            посмотретьИгруToolStripMenuItem.Enabled = true;
         }
 
+        // Реакция на кнопку - Новая игра.
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
             game.SaveJSON();
@@ -223,6 +264,7 @@ namespace CS_GUI
             InitGame();
         }
 
+        // Сброс всех кнопок к исходному состоянию.
         public void RestoreBtns()
         {
             for(int i = 0; i < game.GameField.Size; i++)
@@ -235,54 +277,103 @@ namespace CS_GUI
             }
         }      
 
-        // Сохраняем если не повтор и не выход до регистрации.
+        // Сохраняем игроков, если была регистрация.
+        // Сохраняем игру если ничья с использованием всех ходов или определен победитель.
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if ((game.Players[0].Name != null) && !game.Repeat)
             {
-                game.SaveJSON();
                 players.SaveJSON();
+
+                if((game.HowStep < 9) && (game.NameVictory == "Ничья"))
+                {
+                    
+                }
+                else
+                {                    
+                    game.SaveJSON();
+                }
             }
         }
 
+        // 
         private void buttonComeIn_Click(object sender, EventArgs e)
         {
             if (labelPlayer1.Enabled)
-            {
-                game.Players[0].Name = comboBoxName.Text;
-                players.PlayerS.Add(game.Players[0]);
+            {        
 
+                SelectPlayer(0);
+
+                // Помещаем данные игрока на информационную панель.
                 ToolStripLabel infoGamer1 = new ToolStripLabel();
                 infoGamer1.Text += "Игрок 1: " + game.Players[0].Name;
                 statusStripInfo.Items.Add(infoGamer1);
 
                 labelPlayer1.Enabled = false;
                 labelPlayer2.Enabled = true;
-                //textBoxName.Clear();
-                //buttonRegistrate.Enabled = false;
+
             }
             else
-            {
-                game.Players[1].Name = comboBoxName.Text;
-                players.PlayerS.Add(game.Players[1]);
+            {                
+                SelectPlayer(1);
 
+                // Помещаем данные игрока на информационную панель.
                 ToolStripLabel infoGamer2 = new ToolStripLabel();
                 infoGamer2.Text += "Игрок 2: " + game.Players[1].Name;
                 statusStripInfo.Items.Add(infoGamer2);
 
+                // Запускаем игру после формирования обоих игроков.
                 InitGame();
-
             }
         }
 
-        private void посмотретьИгруToolStripMenuItem_Click(object sender, EventArgs e)
+        public void SelectPlayer(int num)
         {
-            if(!game.Repeat)
+            // Берем имя, выбранное в выпадающем списке.
+            int index = 0;
+            string name = comboBoxName.SelectedItem.ToString();
+
+            // Находим игрока по имени, принимаем в игру, удаляем из списка возможных участников.
+            foreach (Player p in players.PlayerS)
             {
-                game.SaveJSON();
+                if (p.Name == name)
+                {
+                    game.Players[num] = p;
+                    index = players.PlayerS.IndexOf(p);
+                }
             }
 
+            comboBoxName.Items.Remove(name);
 
+            // Обновляем список, если в нем остались игроки.
+            if (comboBoxName.Items.Count == 0)
+            {
+                comboBoxName.Text = "";
+                comboBoxName.Enabled = false;
+            }
+            else
+            {
+                comboBoxName.Text = comboBoxName.Items[0].ToString();
+            }
+        }
+
+
+        private void посмотретьИгруToolStripMenuItem_Click(object sender, EventArgs e)
+        {           
+            // Сохранение последней перед просмотром.
+            if (!game.Repeat)
+            {
+                if ((game.HowStep < 9) && (game.NameVictory == "Ничья"))
+                {
+
+                }
+                else
+                {
+                    game.SaveJSON();
+                }
+            } 
+
+            // Выбор файла.
             if (openFileDialogGame.ShowDialog() == DialogResult.Cancel)
             {
                 return;
@@ -311,6 +402,11 @@ namespace CS_GUI
                
                 game.GameField.Cells[ii, jj].PerformClick();
             }            
+        }
+
+        private void comboBoxName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

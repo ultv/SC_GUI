@@ -45,6 +45,7 @@ namespace CS_GUI
             GameField = new Matrix(form, panel, size);            
             Steps = new int [GameField.Size * GameField.Size];
             Repeat = false;
+            NameVictory = "Ничья";
             
             /* /// уже не надо
             for (int i = 0; i < MaxSteps; i++)

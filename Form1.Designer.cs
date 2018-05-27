@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.посмотретьИгруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripInfo = new System.Windows.Forms.StatusStrip();
             this.panelAccount = new System.Windows.Forms.Panel();
@@ -49,7 +50,6 @@
             this.labelNamePlayer = new System.Windows.Forms.Label();
             this.labelFocus = new System.Windows.Forms.Label();
             this.panelResult = new System.Windows.Forms.Panel();
-            this.посмотретьИгруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialogGame = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.panelAccount.SuspendLayout();
@@ -69,6 +69,13 @@
             this.menuStrip1.Size = new System.Drawing.Size(784, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // посмотретьИгруToolStripMenuItem
+            // 
+            this.посмотретьИгруToolStripMenuItem.Name = "посмотретьИгруToolStripMenuItem";
+            this.посмотретьИгруToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
+            this.посмотретьИгруToolStripMenuItem.Text = "Посмотреть игру";
+            this.посмотретьИгруToolStripMenuItem.Click += new System.EventHandler(this.посмотретьИгруToolStripMenuItem_Click);
             // 
             // выходToolStripMenuItem
             // 
@@ -154,6 +161,7 @@
             this.comboBoxName.Name = "comboBoxName";
             this.comboBoxName.Size = new System.Drawing.Size(145, 21);
             this.comboBoxName.TabIndex = 5;
+            this.comboBoxName.SelectedIndexChanged += new System.EventHandler(this.comboBoxName_SelectedIndexChanged);
             // 
             // buttonComeIn
             // 
@@ -262,13 +270,6 @@
             this.panelResult.Size = new System.Drawing.Size(240, 400);
             this.panelResult.TabIndex = 3;
             this.panelResult.Visible = false;
-            // 
-            // посмотретьИгруToolStripMenuItem
-            // 
-            this.посмотретьИгруToolStripMenuItem.Name = "посмотретьИгруToolStripMenuItem";
-            this.посмотретьИгруToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
-            this.посмотретьИгруToolStripMenuItem.Text = "Посмотреть игру";
-            this.посмотретьИгруToolStripMenuItem.Click += new System.EventHandler(this.посмотретьИгруToolStripMenuItem_Click);
             // 
             // openFileDialogGame
             // 
