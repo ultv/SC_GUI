@@ -295,7 +295,15 @@ namespace CS_GUI
         {
             if(!game.Repeat)
             {
+                // Сохраняем историю игры в базу данных.
                 game.SaveJSON();
+
+                // Дублируем историю игры в базу данных.
+                using (var db = new PlayerGameContext())
+                {
+                    db.GameEF.Add(game);                    
+                    db.SaveChanges();
+                }
             }
             
             /// players.SaveJSON(); /// результаты нужны. - пусть копятся, сохраним при выходе.
@@ -323,16 +331,35 @@ namespace CS_GUI
         {
             if ((game.Players[0].Name != null) && !game.Repeat)
             {
-                
+                // Сохраняем список игроков в JSON.
                 players.SaveJSON();
 
-                if((game.HowStep < 9) && (game.NameVictory == "Ничья"))
+                // Дублируем список игроков в базу данных.
+                using (var db = new PlayerGameContext())
+                {
+                    foreach(Player p in players.PlayerS)
+                    {
+                        db.PlayersEF.Add(p);
+                    }
+
+                    db.SaveChanges();
+                }                                       
+
+                if ((game.HowStep < 9) && (game.NameVictory == "Ничья"))
                 {
                     
                 }
                 else
-                {                    
+                {
+                    // Сохраняем историю игры в базу данных.
                     game.SaveJSON();
+
+                    // Дублируем историю игры в базу данных.
+                    using (var db = new PlayerGameContext())
+                    {                        
+                        db.GameEF.Add(game);                        
+                        db.SaveChanges();
+                    }
                 }
             }
         }
@@ -412,7 +439,15 @@ namespace CS_GUI
                 }
                 else
                 {
+                    // Сохраняем историю игры в JSON.
                     game.SaveJSON();
+
+                    // Дублируем историю игры в базу данных.
+                    using (var db = new PlayerGameContext())
+                    {
+                        db.GameEF.Add(game);
+                        db.SaveChanges();
+                    }
                 }
             } 
 

@@ -13,6 +13,7 @@ namespace CS_GUI
     [DataContract]
     public class Player
     {
+        public int PlayerId { get; set; }
         [DataMember]
         public string Name { get; set; }                
         [DataMember]
