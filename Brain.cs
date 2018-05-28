@@ -48,20 +48,7 @@ namespace CS_GUI
 
         // Найти противоположный угол.
         public int FindAngleOnDiag(Game game, int position)
-        {
-            /*
-            switch (position)
-            {
-                case 0:
-                    return 8;
-                case 8:
-                    return 0;
-                case 2:
-                    return 6;
-                case 6:
-                    return 2;                
-            }
-            */
+        {            
             
             return (game.GameField.Size - position);                 
         }
@@ -109,9 +96,9 @@ namespace CS_GUI
             }
         }
 
-        // Поиск свободного угла.        
+        // Поиск свободного угла. /// Сделать random       
         public int FindFreeAngle(Game game)
-        {
+        { 
             if (game.GameField.Cells[0, 0].Enabled)
             {
                 return 0;
@@ -135,10 +122,8 @@ namespace CS_GUI
         // В данной реализации - соперник всегда начинает первым. 
         public void PlayingIndenpendently(Game game, int position)
         {
-
-          ///  MessageBox.Show(game.HowStep.ToString());
-
-            // На первом своем ходу проверяем центр. Ходы считаются от нуля и инкрементируются после очередного хода???
+          
+            // На первом своем ходу проверяем центр.
             // Если центр занят - находим свободный угол.
             if (game.HowStep == 0)
             {
@@ -165,47 +150,45 @@ namespace CS_GUI
                 }
                 */
 
-                if(!BlockingRows(game, position))
-                {
-                    if(!BlockingCols(game, position))
-                    {
-                        AttackAngle(game);
-                    }
-                }                                
+                // Нужно предварительно проверять "свой победный ход", если его нет - блокировать соперника.
+                // !!! Блокировка побочной диагонали не работает - проверять!
+
+                NextAttack(game, position);
             }
             else if (game.HowStep == 4)
             {
-                if (!BlockingRows(game, position))
-                {
-                    if (!BlockingCols(game, position))
-                    {
-                        AttackAngle(game);
-                    }
-                }
+                NextAttack(game, position);
             }
             else if (game.HowStep == 6)
             {
-                if (!BlockingRows(game, position))
-                {
-                    if (!BlockingCols(game, position))
-                    {
-                        AttackAngle(game);
-                    }
-                }
+                NextAttack(game, position);
             }
             else if (game.HowStep == 8)
             {
-                if (!BlockingRows(game, position))
-                {
-                    if (!BlockingCols(game, position))
-                    {
-                        AttackAngle(game);
-                    }
-                }
-            }
-           
+                NextAttack(game, position);
+            }           
         }
 
+        // Все ходы кроме первого.
+        public void NextAttack(Game game, int position)
+        {
+            if (!BlockingRows(game, position))
+            {
+                if (!BlockingCols(game, position))
+                {
+                    if (!BlockingMainDiag(game, position))
+                    {
+                        if (!BlockingSecDiag(game, position))
+                        {
+                            AttackAngle(game);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        // Занять свободный угол.
         public void AttackAngle(Game game)
         {
             if (FindFreeAngle(game) != -1)
@@ -227,9 +210,7 @@ namespace CS_GUI
 
             if (rowsDangerJ != -1)
             {
-                int rowsDangerI = GetIndexIOfPosition(game, position);
-
-       //         MessageBox.Show(rowsDangerI + " ; " + rowsDangerJ);
+                int rowsDangerI = GetIndexIOfPosition(game, position);       
 
                 MakeStep(game, rowsDangerI, rowsDangerJ);
 
@@ -250,8 +231,6 @@ namespace CS_GUI
             {
                 int colsDangerJ = GetIndexJOfPosition(game, position);
 
-         //       MessageBox.Show(colsDangerI + " ; " + colsDangerJ);
-
                 MakeStep(game, colsDangerI, colsDangerJ);
 
                 return true;
@@ -261,61 +240,42 @@ namespace CS_GUI
         }
 
 
-        // не смогу различить какой элемент сработал. Проверю сразу в проверке хода. /// не планирую больше использовать.
-        public int FindElForBlocking(Game game, int position)
+        public bool BlockingMainDiag(Game game, int position)
         {
+            CloneMatrix CloneGameField = MakeClone(game);
 
-            /*
-            Matrix testGameField = game.GameField;
+            // Блокировка строки в случае вероятной опасности.                
+            int mainDiagDanger = CloneGameField.ReviseMainDiag(position);
 
-            testGameField.NowEquality += IsNeedBloking;
-
-            for (int position = 0; position < 9; position++)
-            {
-                testGameField.ReviseRows(position);
-                testGameField.ReviseCols(position);
-                testGameField.ReviseMainDiag(position);
-                testGameField.ReviseSecDiag(position);
-            }
-            */
-
-            //CloneMatrix CloneGameField = (CloneMatrix)game.GameField;            
-
-            CloneMatrix CloneGameField = new CloneMatrix(3);
-
-            // Копируем элементы матрицы.
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    CloneGameField.Cells[i,j] = game.GameField.Cells[i, j];
-
-                    //MessageBox.Show(CloneGameField.Cells[i, j].Text);
-                }
-            }
-            
-            // Проверка строки.
-            int cols = CloneGameField.ReviseRows(position);
-            if(cols != -1)
+            if (mainDiagDanger != -1)
             {                
-                return cols;
+
+                MakeStep(game, mainDiagDanger, mainDiagDanger);
+
+                return true;
             }
 
-            //      CloneGameField.ReviseCols(position);
-            //    CloneGameField.ReviseMainDiag(position);
-            //    CloneGameField.ReviseSecDiag(position);
-
-            
-            
-            // Опасный элемент не выявлен.
-            return -1;
+            return false;
         }
 
+        public bool BlockingSecDiag(Game game, int position)
+        {
+            CloneMatrix CloneGameField = MakeClone(game);
 
+            // Блокировка строки в случае вероятной опасности.                
+            int mainDiagDanger = CloneGameField.ReviseMainDiag(position);
 
+            if (mainDiagDanger != -1)
+            {                
 
+                MakeStep(game, mainDiagDanger, game.GameField.Size - (mainDiagDanger + 1));
 
+                return true;
+            }
 
+            return false;
+        }
+       
         // Перенос данных в клон.
         private CloneMatrix MakeClone(Game game)
         {

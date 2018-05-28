@@ -74,6 +74,7 @@ namespace CS_GUI
                 if(game.Players[game.NowPlaying].Brains != null)
                 {
                     game.Players[game.NowPlaying].Brains.PlayingIndenpendently(game, position);
+                    NoTextButton(game);
                 }
             }
 
@@ -522,6 +523,21 @@ namespace CS_GUI
             statusStripInfo.Items.Add(infoGamer2);
 
             InitGame();
+        }
+
+        ///// Временная заплатка.
+        public void NoTextButton(Game game)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (game.GameField.Cells[i, j].Enabled)
+                    {
+                        game.GameField.Cells[i, j].Text = "";
+                    }
+                }
+            }
         }
     }
 }
