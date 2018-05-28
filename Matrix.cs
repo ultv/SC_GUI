@@ -59,8 +59,8 @@ namespace CS_GUI
 
         // Проверяет элементы строки на равенство первому элементу в строке.
         // Получает индексы порядковый номер изменённой строки, вычисляет индексы.
-        // Возвращает ложь если значение любого элемента строки - не равно значению первого элемента этой строки.            
-        public virtual bool ReviseRows(int position)
+        // !!! Не использовать значение return как индекс совпавшей ячейки. Реализовано только для класса наследника.            
+        public virtual int ReviseRows(int position)
         {
             
             int i = position / Size;            
@@ -68,18 +68,18 @@ namespace CS_GUI
             for (int j = 0; j < Size; j++)
             {
                 if (Cells[i, j].Text != Cells[i, 0].Text)
-                    return false;
+                    return -1;
             }
 
             NowEquality($"Совпадение элементов {i + 1} строки");            
 
-            return true;
+            return 1;
         }
 
         // Проверяет элементы столбца на равенство первому элементу в столбце.
         // Получает индексы порядковый номер измнённого столбца, вычисляет индексы.
-        // Возвращает ложь если значение любого элемента столбца - не равно значению первого элемента этого столбца.            
-        public virtual bool ReviseCols(int position)
+        // !!! Не использовать значение return как индекс совпавшей ячейки. Реализовано только для класса наследника.            
+        public virtual int ReviseCols(int position)
         {
             int j = position % Size;
 
@@ -87,11 +87,11 @@ namespace CS_GUI
             for (int i = 0; i < Size; i++)
             {
                 if (Cells[i, j].Text != Cells[0, j].Text)
-                    return false;
+                    return -1;
             }
 
             NowEquality($"Совпадение элементов {j + 1} столбца");            
-            return true;
+            return 1;
         }
 
         // Проверяет элементы главной диагонали матрицы на равенство первому элементу в диагонали.
