@@ -197,7 +197,14 @@ namespace CS_GUI
                 game.Players[0].Name = textBoxName.Text;
                 players.PlayerS.Add(game.Players[0]);
 
-                ToolStripLabel infoGamer1 = new ToolStripLabel();
+                // Дублируем игроков в базу данных.
+                using (var db = new PlayerGameContext())
+                {                                  
+                    db.PlayersEF.Add(game.Players[0]);                    
+                    db.SaveChanges();
+                }
+
+                    ToolStripLabel infoGamer1 = new ToolStripLabel();
                 infoGamer1.Text += "Игрок 1: " + game.Players[0].Name;
                 statusStripInfo.Items.Add(infoGamer1);
 
@@ -210,6 +217,13 @@ namespace CS_GUI
             {
                 game.Players[1].Name = textBoxName.Text;
                 players.PlayerS.Add(game.Players[1]);
+
+                // Дублируем игроков в базу данных.
+                using (var db = new PlayerGameContext())
+                {
+                    db.PlayersEF.Add(game.Players[1]);
+                    db.SaveChanges();
+                }
 
                 ToolStripLabel infoGamer2 = new ToolStripLabel();
                 infoGamer2.Text += "Игрок 2: " + game.Players[1].Name;
@@ -334,7 +348,8 @@ namespace CS_GUI
                 // Сохраняем список игроков в JSON.
                 players.SaveJSON();
 
-                // Дублируем список игроков в базу данных.
+                /*
+                // Дублируем игроков в базу данных.
                 using (var db = new PlayerGameContext())
                 {
                     foreach(Player p in players.PlayerS)
@@ -344,6 +359,7 @@ namespace CS_GUI
 
                     db.SaveChanges();
                 }                                       
+                */
 
                 if ((game.HowStep < 9) && (game.NameVictory == "Ничья"))
                 {
