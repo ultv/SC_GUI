@@ -7,8 +7,10 @@ using System.Windows.Forms;
 
 namespace CS_GUI
 {
-    class Brain
+    public class Brain
     {
+        public int BrainId { get; set; }
+
         public void MakeStep(Game game, int i, int j)
         {
             game.GameField.Cells[i, j].PerformClick();

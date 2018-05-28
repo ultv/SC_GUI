@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace CS_GUI
 {
-    class Matrix
+    public class Matrix
     {
         public int Size { get; set; }
         public Button[,] Cells { get; set; }

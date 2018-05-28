@@ -7,11 +7,12 @@ using System.Windows.Forms;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CS_GUI
 {
     [DataContract]
-    class Game
+    public class Game
     {
         public int GameId { get; set; }
         [DataMember]
@@ -25,9 +26,13 @@ namespace CS_GUI
         [DataMember]
         public int [] Steps { get; set; }
  
+        [NotMapped]
         public int NowPlaying { get; set; }
+        [NotMapped]
         public bool PrevX { get; set; }
+        [NotMapped]
         public bool Repeat { get; set; }
+        [NotMapped]
         public Matrix GameField { get; set; }        
 
         public delegate void Stop(string message);
