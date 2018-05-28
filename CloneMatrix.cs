@@ -4,74 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing;
 
 namespace CS_GUI
 {
-    public class Matrix
+    class CloneMatrix : Matrix
     {
-        public int Size { get; set; }
-        public Button[,] Cells { get; set; }
-
-        public delegate void Equality(string message);
-        public event Equality NowEquality;
-        
-        public Matrix(int size)
+        public CloneMatrix(int size) : base(size)
         {
-            Size = size;
-            Cells = new Button[size, size];
-
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    Cells[i, j] = new Button();             
-                }
-            }
 
         }
-
-        public Matrix(Form1 form, Panel panel, int size)
-        {
-            Size = size;
-            Cells = new Button[size, size];
-
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {             
-                    Cells[i, j] = new Button();
-
-                    Cells[i, j].Height = 75;
-                    Cells[i, j].Width = 75;
-                    Cells[i, j].Top = i * 75 + 25;
-                    Cells[i, j].Left = j * 75 + 5;
-                    Cells[i, j].Font = new Font("Arial", 30);
-                    Cells[i, j].Name = (i * size + j).ToString();                    
-                    Cells[i, j].Click += form.Button_Click;                    
-                    Cells[i, j].MouseEnter += form.Button_MouseEnter;
-                    Cells[i, j].MouseLeave += form.Button_MouseLeave;
-
-                    panel.Controls.Add(Cells[i, j]);
-                }
-            }
-        }
-
+  
         // Проверяет элементы строки на равенство первому элементу в строке.
         // Получает индексы порядковый номер изменённой строки, вычисляет индексы.
         // Возвращает ложь если значение любого элемента строки - не равно значению первого элемента этой строки.            
-        public virtual bool ReviseRows(int position)
+        public override bool ReviseRows(int position)
         {
-            
-            int i = position / Size;            
+
+            int i = position / Size;
 
             for (int j = 0; j < Size; j++)
             {
-                if (Cells[i, j].Text != Cells[i, 0].Text)
-                    return false;
-            }
+                if(Cells[i,j].Enabled)
+                {
+                    Cells[i, j].Text = "X";
 
-            NowEquality($"Совпадение элементов {i + 1} строки");            
+                    for (int jj = 0; jj < Size; jj++)
+                    {
+
+                        if (Cells[i, jj].Text != Cells[i, 0].Text)
+                            return false;
+                    }
+
+                    Cells[i, j].Text = "";
+                }                
+            }
+            
+            // NowEquality($"Совпадение элементов {i + 1} строки");
+            MessageBox.Show($"Срочно блокируй {i + 1} строку");
 
             return true;
         }
@@ -79,7 +48,7 @@ namespace CS_GUI
         // Проверяет элементы столбца на равенство первому элементу в столбце.
         // Получает индексы порядковый номер измнённого столбца, вычисляет индексы.
         // Возвращает ложь если значение любого элемента столбца - не равно значению первого элемента этого столбца.            
-        public virtual bool ReviseCols(int position)
+        public override bool ReviseCols(int position)
         {
             int j = position % Size;
 
@@ -90,7 +59,9 @@ namespace CS_GUI
                     return false;
             }
 
-            NowEquality($"Совпадение элементов {j + 1} столбца");            
+            // NowEquality($"Совпадение элементов {j + 1} столбца");
+            MessageBox.Show($"Срочно блокируй {j + 1} столбец");
+
             return true;
         }
 
@@ -100,7 +71,7 @@ namespace CS_GUI
         // Возвращает ложь если значение любого элемента диагонали - не равно значению первого элемента диагонали.
         // Предварительно проверяется было ли изменение в первом элементе диагонали. Т.к. одинаковое значение
         // во всех ячейках диагонали, которое используется по умолчанию - приводит к неверному результату проверки. 
-        public virtual bool ReviseMainDiag(int position)
+        public override bool ReviseMainDiag(int position)
         {
             int I = position / Size;
             int J = position % Size;
@@ -109,21 +80,23 @@ namespace CS_GUI
             if (I != J)
             {
                 return false;
-            }                
+            }
             else
             {
                 if (Cells[0, 0].Text == "")
                 {
                     return false;
                 }
-                    
+
                 for (int i = 0; i < Size; i++)
                 {
                     if ((Cells[i, i].Text != Cells[0, 0].Text))
                         return false;
                 }
 
-                NowEquality("Совпадение элементов главной диагонали");
+                // NowEquality("Совпадение элементов главной диагонали");
+                MessageBox.Show("Срочно блокируй главную диагональ");
+
                 return true;
             }
         }
@@ -133,22 +106,22 @@ namespace CS_GUI
         // Возвращает ложь если значение любого элемента диагонали - не равно значению первого элемента диагонали.
         // Предварительно проверяется было ли изменение в первом элементе диагонали. Т.к. одинаковое значение
         // во всех ячейках диагонали, которое используется по умолчанию - приводит к неверному результату проверки. 
-        public virtual bool ReviseSecDiag(int position)
+        public override bool ReviseSecDiag(int position)
         {
             int I = position / Size;
             int J = position % Size;
 
-            if(J != (Size - (I + 1)))
+            if (J != (Size - (I + 1)))
             {
                 return false;
-            }                
+            }
             else
             {
                 if (Cells[0, Size - 1].Text == "")
                 {
                     return false;
                 }
-                    
+
                 for (int i = 0; i < Size; i++)
                 {
                     if (Cells[i, Size - (i + 1)].Text != Cells[0, Size - 1].Text)
@@ -156,7 +129,9 @@ namespace CS_GUI
                 }
             }
 
-            NowEquality("Совпадение элементов побочной диагонали");
+            // NowEquality("Совпадение элементов побочной диагонали");
+            MessageBox.Show("Срочно блокируй побочную диагонали");
+
             return true;
         }
 

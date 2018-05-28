@@ -69,6 +69,12 @@ namespace CS_GUI
             {
                 game.ChangePlaying();
                 labelNamePlayer.Text = game.Players[game.NowPlaying].Name;
+
+                // Пробуем статус второго игрока.
+                if(game.Players[game.NowPlaying].Brains != null)
+                {
+                    game.Players[game.NowPlaying].Brains.PlayingIndenpendently(game, position);
+                }
             }
 
             game.IncStep();
@@ -210,11 +216,12 @@ namespace CS_GUI
 
                 labelPlayer1.Enabled = false;
                 labelPlayer2.Enabled = true;
+                checkBoxComp.Visible = true;
                 textBoxName.Clear();
                 buttonRegistrate.Enabled = false;
             }
             else
-            {
+            {                                
                 game.Players[1].Name = textBoxName.Text;
                 players.PlayerS.Add(game.Players[1]);
 
@@ -252,6 +259,7 @@ namespace CS_GUI
             buttonNewGame.Visible = false;
             RestoreBtns();
             посмотретьИгруToolStripMenuItem.Enabled = false;
+            checkBoxComp.Visible = false;
 
 
         }
@@ -395,6 +403,7 @@ namespace CS_GUI
 
                 labelPlayer1.Enabled = false;
                 labelPlayer2.Enabled = true;
+                checkBoxComp.Visible = true;
 
             }
             else
@@ -501,6 +510,18 @@ namespace CS_GUI
         private void comboBoxName_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBoxComp_CheckedChanged(object sender, EventArgs e)
+        {
+            game.Players[1].Name = "Компьютер";
+            game.Players[1].Brains = new Brain();
+
+            ToolStripLabel infoGamer2 = new ToolStripLabel();
+            infoGamer2.Text += "Игрок 2: " + game.Players[1].Name;
+            statusStripInfo.Items.Add(infoGamer2);
+
+            InitGame();
         }
     }
 }

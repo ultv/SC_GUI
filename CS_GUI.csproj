@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Brain.cs" />
+    <Compile Include="CloneMatrix.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

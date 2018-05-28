@@ -124,6 +124,7 @@
             this.checkBoxComp.Text = "Играть с компьютером";
             this.checkBoxComp.UseVisualStyleBackColor = true;
             this.checkBoxComp.Visible = false;
+            this.checkBoxComp.CheckedChanged += new System.EventHandler(this.checkBoxComp_CheckedChanged);
             // 
             // labelPlayer2
             // 
