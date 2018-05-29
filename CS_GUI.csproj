@@ -54,7 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Brain.cs" />
+    <Compile Include="Cell.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CloneMatrix.cs" />
+    <Compile Include="Cube.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +66,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
+    <Compile Include="Line.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Matrix.cs" />
     <Compile Include="Migrations\201805281242251_InitialCreate.cs" />
     <Compile Include="Migrations\201805281242251_InitialCreate.Designer.cs">

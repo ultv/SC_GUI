@@ -18,13 +18,17 @@ namespace CS_GUI
         public Form1()
         {            
             InitializeComponent();
-            Width = 300;
+            Width = 900 ;//300;
             Height = 520;
             panelAccount.Top = 40;
             panelAccount.Left = 20;
 
             game = new Game(this, panelBtns, 3);
             game.GameField.NowEquality += FinalyGame;
+
+
+            //////////
+            Cube cube = new Cube(panelResult, 3);
 
             players = new Players();
             

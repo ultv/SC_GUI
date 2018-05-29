@@ -272,7 +272,6 @@
             this.panelResult.Name = "panelResult";
             this.panelResult.Size = new System.Drawing.Size(240, 400);
             this.panelResult.TabIndex = 3;
-            this.panelResult.Visible = false;
             // 
             // openFileDialogGame
             // 
