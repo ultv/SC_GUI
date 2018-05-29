@@ -27,20 +27,25 @@ namespace CS_GUI
             game.GameField.NowEquality += FinalyGame;
 
             players = new Players();
+            
             players = players.LoadJSON();
 
-            foreach (Player pl in players.PlayerS)
+            if (players != null)
             {
-                comboBoxName.Items.Add(pl.Name);
+                foreach (Player pl in players.PlayerS)
+                {
+                    comboBoxName.Items.Add(pl.Name);
+                }
+
             }
 
-            if(comboBoxName.Items.Count != 0)
+            if (comboBoxName.Items.Count != 0)
             {
                 comboBoxName.Enabled = true;
                 comboBoxName.Text = comboBoxName.Items[0].ToString();
                 buttonComeIn.Enabled = true;
             }
-            
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -156,7 +161,7 @@ namespace CS_GUI
         }
 
         private void textBoxName_TextChanged(object sender, EventArgs e)
-        {
+        {            
 
             if (!IsExistName(textBoxName.Text))
             {
@@ -185,15 +190,17 @@ namespace CS_GUI
         // Возвращает истину если игрок уже зарегистрирован.
         private bool IsExistName(string name)
         {
-
-            foreach (Player p in players.PlayerS)
+            if (players != null)
             {
-                if (p.Name == name)
+                foreach (Player p in players.PlayerS)
                 {
-                    return true;
+                    if (p.Name == name)
+                    {
+                        return true;
+                    }
                 }
             }
-
+            
             return false;
         }
 
@@ -300,15 +307,18 @@ namespace CS_GUI
         public int FindIndexByName(string name)
         {
             int index = 0;
-            
-            foreach (Player p in players.PlayerS)
+
+            if(players != null)
             {
-                if (p.Name == name)
-                {            
-                    index = players.PlayerS.IndexOf(p);
+                foreach (Player p in players.PlayerS)
+                {
+                    if (p.Name == name)
+                    {
+                        index = players.PlayerS.IndexOf(p);
+                    }
                 }
             }
-
+            
             return index;
         }
 

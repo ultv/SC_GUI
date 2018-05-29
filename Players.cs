@@ -44,27 +44,29 @@ namespace CS_GUI
         }
 
         // Загрузка списка игроков с параметрами.
+        // Временно поменял, чтобы при первом запуске создавал Players.json
+        // Потом найду решение.
         public Players LoadJSON()
         {
             Players players;
 
-            //if (!FileIsNotFound("Players.json", FileAccess.ReadWrite))
-            //{
-
-
+            try
+            {
                 using (FileStream fs = new FileStream("Players.json", FileMode.OpenOrCreate, FileAccess.Read))
                 {
                     DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(Players));
 
                     players = (Players)jsonFormatter.ReadObject(fs);
-                }
-            
-                
-                
-                //}
-            //else return null;
 
-            return players;
+                    return players;
+                }
+            }
+            catch
+            {
+                players = new Players();
+                return players;
+            }                                                                               
+            
         }
 
 

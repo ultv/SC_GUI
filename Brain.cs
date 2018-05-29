@@ -157,15 +157,15 @@ namespace CS_GUI
             }
             else if (game.HowStep == 4)
             {
-    //            NextAttack(game, position);
+                NextAttack(game, position);
             }
             else if (game.HowStep == 6)
             {
-  //              NextAttack(game, position);
+                NextAttack(game, position);
             }
             else if (game.HowStep == 8)
             {
-  //              NextAttack(game, position);
+                NextAttack(game, position);
             }           
         }
 
@@ -184,7 +184,7 @@ namespace CS_GUI
                         {
                             if (!BlockingSecDiag(game, position))
                             {
-          //                      AttackAngle(game);
+                                AttackAngle(game);
                             }
                         }
                     }
