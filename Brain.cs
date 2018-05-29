@@ -157,35 +157,40 @@ namespace CS_GUI
             }
             else if (game.HowStep == 4)
             {
-                NextAttack(game, position);
+    //            NextAttack(game, position);
             }
             else if (game.HowStep == 6)
             {
-                NextAttack(game, position);
+  //              NextAttack(game, position);
             }
             else if (game.HowStep == 8)
             {
-                NextAttack(game, position);
+  //              NextAttack(game, position);
             }           
         }
 
         // Все ходы кроме первого.
         public void NextAttack(Game game, int position)
         {
-            if (!BlockingRows(game, position))
+     //       int attackPosition = position;
+
+   //         if (!AttackRows(game, attackPosition))
             {
-                if (!BlockingCols(game, position))
+                if (!BlockingRows(game, position))
                 {
-                    if (!BlockingMainDiag(game, position))
+                    if (!BlockingCols(game, position))
                     {
-                        if (!BlockingSecDiag(game, position))
+                        if (!BlockingMainDiag(game, position))
                         {
-                            AttackAngle(game);
+                            if (!BlockingSecDiag(game, position))
+                            {
+          //                      AttackAngle(game);
+                            }
                         }
                     }
-
                 }
             }
+            
         }
 
         // Занять свободный угол.
@@ -201,11 +206,12 @@ namespace CS_GUI
             }
         }
 
+
+        // Блокировка строки в случае вероятной опасности.                
         public bool BlockingRows(Game game, int position)
         {
-            CloneMatrix CloneGameField = MakeClone(game);
-
-            // Блокировка строки в случае вероятной опасности.                
+            CloneMatrix CloneGameField = MakeClone(game);            
+            
             int rowsDangerJ = CloneGameField.ReviseRows(position);
 
             if (rowsDangerJ != -1)
@@ -217,6 +223,30 @@ namespace CS_GUI
                 return true;
             }
 
+            return false;
+        }
+
+
+        // Атака строки в случае её возможности.
+        public bool AttackRows(Game game, int position)
+        {
+            CloneMatrix CloneGameField = MakeClone(game);            
+
+            int returnedRowsAttackI = 0;
+
+            int rowsAttackJ = CloneGameField.AttRows(out returnedRowsAttackI);
+
+            MessageBox.Show(returnedRowsAttackI + " - " + rowsAttackJ);
+
+            if (rowsAttackJ != -1)
+            {                
+                MakeStep(game, returnedRowsAttackI, rowsAttackJ);
+
+                MessageBox.Show("Я атаковал строку");
+                return true;                
+            }
+
+        //    MessageBox.Show("Cтроку не должен атаковать");
             return false;
         }
 
