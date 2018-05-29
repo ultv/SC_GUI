@@ -133,7 +133,8 @@ namespace CS_GUI
                 }
                 else
                 {
-                    AttackAngle(game);
+                    AttackAngle(game); 
+                   
                 }
             }
             else if(game.HowStep == 2)
@@ -150,8 +151,7 @@ namespace CS_GUI
                 }
                 */
 
-                // Нужно предварительно проверять "свой победный ход", если его нет - блокировать соперника.
-                // !!! Блокировка побочной диагонали не работает - проверять!
+                // Нужно предварительно проверять "свой победный ход", если его нет - блокировать соперника.             
 
                 NextAttack(game, position);
             }
@@ -263,7 +263,7 @@ namespace CS_GUI
             CloneMatrix CloneGameField = MakeClone(game);
 
             // Блокировка строки в случае вероятной опасности.                
-            int mainDiagDanger = CloneGameField.ReviseMainDiag(position);
+            int mainDiagDanger = CloneGameField.ReviseSecDiag(position);
 
             if (mainDiagDanger != -1)
             {                
