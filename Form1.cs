@@ -16,6 +16,8 @@ namespace CS_GUI
         Cube cube;
         Players players;
 
+        int cubeSize = 3;
+
         public Form1()
         {            
             InitializeComponent();
@@ -32,10 +34,15 @@ namespace CS_GUI
             /////////
             /////////
 
-            cube = new Cube(this, panelResult, 3);
-            //cube.lines[0].NowEqualityXO += DefWinner;
-            cube.lines[1].NowEqualityXO += DefWinner;
-            //cube.lines[2].NowEqualityXO += DefWinner;
+            
+
+            cube = new Cube(this, panelResult, cubeSize);
+
+            for(int i = 0; i < cubeSize; i++)
+            {
+                cube.lines[i].NowEqualityXO += DefWinner;
+            }            
+            
 
 
 
@@ -82,12 +89,11 @@ namespace CS_GUI
             Button button = (Button)sender;
             SetBtnText(game, button);
 
-            cube.lines[0].KnowSumX();
-            cube.lines[0].KnowSumO();
-            cube.lines[1].KnowSumX();
-            cube.lines[1].KnowSumO();
-            cube.lines[2].KnowSumX();
-            cube.lines[2].KnowSumO();
+            for(int i = 0; i < cubeSize; i++)
+            {
+                cube.lines[i].KnowSumX(cubeSize);
+                cube.lines[i].KnowSumO(cubeSize);
+            }                        
 
             //-- MessageBox.Show($"X =  {sumX} O =  {sumO}");
         }

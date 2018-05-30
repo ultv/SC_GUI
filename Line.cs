@@ -8,58 +8,80 @@ using System.Windows.Forms;
 namespace CS_GUI
 {
     class Line : Cell
-    {        
-        public int SumX { get; set; }
-        public int SumO { get; set; }
-        public int Length { get; set; }
+    {
+        private int Position { get; set; }
+        private int Size { get; set; }
+        private int SumX { get; set; }
+        private int SumO { get; set; }        
         public Cell[] Cells { get; set; }
 
-        public Line() { }
+        public Line() { }  
 
-        public delegate void EqualityX();
-        public event EqualityX NowEqualityXO;        
-
-        public Line(Form1 form, Panel panel, int length, int posInCube) : base (form, 0, posInCube * length)
+        public Line(Form1 form, Panel panel, int size, int position)
         {
-            Length = length;
-            PosInCube = posInCube;
+            Size = size;            
+            Cells = new Cell[size];
+            int offset = 25;
 
-            Cells = new Cell[length];
-
-            for(int i = 0; i < length; i++)
+            for(int i = 0; i < size; i++)
             {
-                Cells[i] = new Cell(form, i, posInCube * length);
+                Cells[i] = new Cell(form, position * size + i);
+                Cells[i].Butt.Top = 75 * position + offset;
 
-                panel.Controls.Add(Cells[i]);
+                panel.Controls.Add(Cells[i].Butt);
             }
         }
+
+        public delegate void EqualityX();
+        public event EqualityX NowEqualityXO;
 
         /// <summary>
         /// Возвращает сумму значений "Х" во всех ячейках строки. 
         /// </summary>
         /// <returns></returns>
-        public int KnowSumX()
+        public int KnowSumX(int size)
         {
-            int summ = Cells[0] + Cells[1] + Cells[2];
-            if (summ == 3)
+            int sum = 0;
+            
+            for (int i = 0; i < size; i++)
+            {
+                sum = sum + Cells[i];
+            }
+
+            if (sum == 2)
+            {
+                // надо атаковать или блокировать.
+            }
+
+            if (sum == 3)
             {
                 NowEqualityXO();
             }
-                return summ;
+                return sum;
         }
 
         /// <summary>
         /// Возвращает сумму значений "O" во всех ячейках строки. 
         /// </summary>
         /// <returns></returns>
-        public int KnowSumO()
+        public int KnowSumO(int size)
         {
-            int summ = Cells[0] - Cells[1] - Cells[2];
-            if (summ == 3)
+            int sum = 0;
+
+            for (int i = 0; i < size; i++)
+            {
+                sum = sum - Cells[i];
+            }
+
+            if (sum == 2)
+            {
+                // надо атаковать или блокировать.
+            }
+            if (sum == 3)
             {
                 NowEqualityXO();
             }
-            return summ;
+            return sum;
         }
     }
 }

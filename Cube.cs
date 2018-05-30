@@ -12,9 +12,10 @@ namespace CS_GUI
     /// Size куба равна Length линии.     
     /// </summary>   
     class Cube : Line
-    {        
-      //  public int SumXX { get; set; }
-      //  public int SumOO { get; set; }
+    {
+        private int SumX { get; set; }
+        private int SumO { get; set; }
+
         public Line[] lines;
 
         public Cube(Form1 form, Panel panel, int size)
@@ -23,16 +24,11 @@ namespace CS_GUI
 
             for (int i = 0; i < size; i++)
             {
-                lines[i] = new Line(form, panel, size, i);
-                lines[i].Cells[0].Top = 75 * i + 125;
-                lines[i].Cells[1].Top = 75 * i + 125;
-                lines[i].Cells[2].Top = 75 * i + 125;
-
-                panel.Controls.Add(lines[i]);             
+                lines[i] = new Line(form, panel, size, i);        
+                panel.Controls.Add(lines[i].Butt);             
             }
 
         }
-
         
     }
 
