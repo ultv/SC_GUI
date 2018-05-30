@@ -13,6 +13,7 @@ namespace CS_GUI
     public partial class Form1 : Form
     {
         static Game game;
+        Cube cube;
         Players players;
 
         public Form1()
@@ -28,7 +29,21 @@ namespace CS_GUI
 
 
             //////////
-            Cube cube = new Cube(panelResult, 3);
+            /////////
+            /////////
+
+            cube = new Cube(this, panelResult, 3);
+            //cube.lines[0].NowEqualityXO += DefWinner;
+            cube.lines[1].NowEqualityXO += DefWinner;
+            //cube.lines[2].NowEqualityXO += DefWinner;
+
+
+
+
+            /////////
+            ////////
+            ////////
+
 
             players = new Players();
             
@@ -56,6 +71,48 @@ namespace CS_GUI
         {
 
         }
+
+        /// <summary>
+        /// Нажатие на кнопку-ячейку.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void Cell_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            SetBtnText(game, button);
+
+            cube.lines[0].KnowSumX();
+            cube.lines[0].KnowSumO();
+            cube.lines[1].KnowSumX();
+            cube.lines[1].KnowSumO();
+            cube.lines[2].KnowSumX();
+            cube.lines[2].KnowSumO();
+
+            //-- MessageBox.Show($"X =  {sumX} O =  {sumO}");
+        }
+
+        /// <summary>
+        /// Происходит при достижении X = 3.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void EqualityX(object sender, EventArgs e)
+        {
+
+        }
+
+        public void DefWinner()
+        {
+            MessageBox.Show("Есть победитель!");
+        }
+
+        
+
+
+
+
+        
 
         public void Button_Click(object sender, EventArgs e)
         {
