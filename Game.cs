@@ -71,7 +71,7 @@ namespace CS_GUI
         {
             HowStep++;
 
-            if ((HowStep == (GameField.Size * GameField.Size)) && (NameVictory == "Ничья"))
+            if ((HowStep == (TotalSteps(GameField.Size))) && (NameVictory == "Ничья"))
             {
                 StopGame("Нет победителя.");
             }

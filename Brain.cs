@@ -46,6 +46,7 @@ namespace CS_GUI
             return position % game.GameField.Size;
         }
 
+        // Здесь ошибка. Выявлена при формировании теста.
         // Найти противоположный угол.
         public int FindAngleOnDiag(Game game, int position)
         {            

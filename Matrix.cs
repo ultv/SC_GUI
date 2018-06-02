@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace CS_GUI
+namespace CS_GUI    
 {
     public class Matrix
     {
@@ -15,7 +15,9 @@ namespace CS_GUI
 
         public delegate void Equality(string message);
         public event Equality NowEquality;
-        
+
+        public Matrix() { }
+
         public Matrix(int size)
         {
             Size = size;

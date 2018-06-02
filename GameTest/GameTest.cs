@@ -14,7 +14,7 @@ namespace GameTest
             int accept = 3;            
             int expected = 9;
 
-            Game game = new Game();
+            Game game = new Game();           
             int actual = game.TotalSteps(accept);
 
             Assert.AreEqual(expected, actual);
