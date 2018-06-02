@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace CS_GUI
 {
-    class Line : Cell
+    class Line
     {
         private int Position { get; set; }
         private int Size { get; set; }

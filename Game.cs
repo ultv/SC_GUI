@@ -36,8 +36,10 @@ namespace CS_GUI
         public Matrix GameField { get; set; }        
 
         public delegate void Stop(string message);
-        public event Stop StopGame;    
+        public event Stop StopGame;
 
+        public Game() { }
+       
         public Game(Form1 form, Panel panel, int size)
         {            
             HowStep = 0;
@@ -47,13 +49,23 @@ namespace CS_GUI
             Player player2 = new Player();
             Players = new Player[] { player1, player2 };
             GameField = new Matrix(form, panel, size);            
-            Steps = new int [GameField.Size * GameField.Size];
+            Steps = new int [TotalSteps(GameField.Size)];
             Repeat = false;
             NameVictory = "Ничья";                        
 
             StopGame += ShowResult;
             StopGame += form.NoVictory;
-        }       
+        }
+        
+        /// <summary>
+        /// Определение общего количества ходов (соответствует общему количеству ячеек на игровом поле).
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public int TotalSteps(int size)
+        {
+            return size * size;
+        }
 
         public void IncStep()
         {

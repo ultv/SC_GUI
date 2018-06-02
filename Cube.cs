@@ -25,7 +25,7 @@ namespace CS_GUI
             for (int i = 0; i < size; i++)
             {
                 lines[i] = new Line(form, panel, size, i);        
-                panel.Controls.Add(lines[i].Butt);             
+                panel.Controls.Add(lines[i].Cells[i].Butt);             
             }
 
         }
