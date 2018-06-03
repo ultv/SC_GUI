@@ -7,7 +7,8 @@ namespace BrainTest
 {
     [TestClass]
     public class BrainTest
-    {
+    {        
+
         [TestMethod]
         public void GetIndexIOfPosition_5_1returned()
         {
