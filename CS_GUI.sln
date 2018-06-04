@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTest", "GameTest\GameTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainTest", "BrainTest\BrainTest.csproj", "{A38105F5-610C-4E11-BFC9-AEA0A89956B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectorTest", "SelectorTest\SelectorTest.csproj", "{C7BF7084-D218-4B38-B542-DFE49C4C7477}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A38105F5-610C-4E11-BFC9-AEA0A89956B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A38105F5-610C-4E11-BFC9-AEA0A89956B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A38105F5-610C-4E11-BFC9-AEA0A89956B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7BF7084-D218-4B38-B542-DFE49C4C7477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7BF7084-D218-4B38-B542-DFE49C4C7477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7BF7084-D218-4B38-B542-DFE49C4C7477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7BF7084-D218-4B38-B542-DFE49C4C7477}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

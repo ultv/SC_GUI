@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CS_GUI
 {
     [DataContract]
-    public class Game
+    public class Game : IGame
     {
         public int GameId { get; set; }
         [DataMember]
@@ -55,6 +55,33 @@ namespace CS_GUI
 
             StopGame += ShowResult;
             StopGame += form.NoVictory;
+        }
+
+        /// <summary>
+        /// Depenndency Injection через конструктор.
+        /// </summary>
+        /// <param name="size"></param>
+        public Game(int size)
+        {
+            Game game = new Game();
+
+            game.GameField = new Matrix();
+            game.GameField.Size = size;
+           
+        }
+        
+        /// <summary>
+        /// Реализация метода для "заглушки" в BrainTest.
+        /// </summary>
+        /// <returns></returns>
+        public Game GetTestGame()
+        {
+            Game game = new Game();
+            
+            game.GameField = new Matrix();
+            game.GameField.Size = 3;
+
+            return game;
         }
         
         /// <summary>
