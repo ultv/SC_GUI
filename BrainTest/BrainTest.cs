@@ -44,14 +44,16 @@ namespace BrainTest
         [TestMethod]
         public void DIGetIndexIJfPosition_5_2returned()
         {
+            // Arrange
             int accept = 5;
             int expected = 2;
-
             Brain brain = new Brain();
             Game game = new Game(3);
 
+            // Act
             int actual = brain.GetIndexJOfPosition(game.GetTestGame(), accept);
 
+            //Assert
             Assert.AreEqual(expected, actual);
 
         }
@@ -59,14 +61,16 @@ namespace BrainTest
         [TestMethod]
         public void StubGetIndexIJfPosition_5_2returned()
         {
+            // Arrange
             int accept = 5;
             int expected = 2;
-
             Brain brain = new Brain();
             StubGame stubGame = new StubGame();
 
+            // Act
             int actual = brain.GetIndexJOfPosition(stubGame.GetTestGame(), accept);
 
+            //Assert
             Assert.AreEqual(expected, actual);
 
         }

@@ -21,7 +21,7 @@ namespace CS_GUI
         public Form1()
         {            
             InitializeComponent();
-            Width = 900 ;//300;
+            Width = 300; //900;
             Height = 520;
             panelAccount.Top = 40;
             panelAccount.Left = 20;

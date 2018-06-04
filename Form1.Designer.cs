@@ -66,7 +66,7 @@
             this.выходToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(264, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -88,7 +88,7 @@
             // 
             this.statusStripInfo.Location = new System.Drawing.Point(0, 460);
             this.statusStripInfo.Name = "statusStripInfo";
-            this.statusStripInfo.Size = new System.Drawing.Size(784, 22);
+            this.statusStripInfo.Size = new System.Drawing.Size(264, 22);
             this.statusStripInfo.TabIndex = 1;
             this.statusStripInfo.Text = "statusStrip1";
             // 
@@ -272,6 +272,7 @@
             this.panelResult.Name = "panelResult";
             this.panelResult.Size = new System.Drawing.Size(240, 400);
             this.panelResult.TabIndex = 3;
+            this.panelResult.Visible = false;
             // 
             // openFileDialogGame
             // 
@@ -281,7 +282,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 482);
+            this.ClientSize = new System.Drawing.Size(264, 482);
             this.Controls.Add(this.panelResult);
             this.Controls.Add(this.panelGame);
             this.Controls.Add(this.panelAccount);
@@ -290,7 +291,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(800, 520);
-            this.MinimumSize = new System.Drawing.Size(300, 520);
+            this.MinimumSize = new System.Drawing.Size(280, 520);
             this.Name = "Form1";
             this.Text = "Крестики-нолики";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
